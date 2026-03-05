@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { MobileNav } from "@/components/MobileNav"
 import { FAQ } from "@/components/FAQ"
+import { AnimatedCounter } from "@/components/counter"
 
 export default function HomePage() {
   return (
@@ -194,7 +195,7 @@ export default function HomePage() {
         <section className="border-t border-b bg-muted/30 py-12">
           <div className="container mx-auto px-4 text-center">
             <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
-              Trusted by <span className="font-bold text-foreground">50+</span> dental clinics across the country
+              Trusted by <AnimatedCounter target={50} suffix="+" className="font-bold text-foreground" /> dental clinics across the country
             </p>
           </div>
         </section>
