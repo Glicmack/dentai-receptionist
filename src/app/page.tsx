@@ -290,99 +290,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Patient Reviews */}
-        <section className="py-20">
-          <div className="container mx-auto px-4">
-            <div className="mb-14 text-center">
-              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-                What Our Patients Say{" "}
-                <span className="text-gradient">About Us</span>
-              </h2>
-              <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-                Real stories from dental clinics using DentAI to transform their patient experience.
-              </p>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-3">
-              {[
-                {
-                  name: "Dr. Priya Sharma",
-                  role: "Smile Care Dental Clinic",
-                  review: "DentAI has completely transformed how we handle patient calls. We never miss an appointment request now, and our patients love the 24/7 availability.",
-                  rating: 5,
-                },
-                {
-                  name: "Dr. Rajesh Patel",
-                  role: "BrightSmile Dentistry",
-                  review: "The AI receptionist sounds so natural that most patients don't even realize they're talking to AI. Our no-show rate dropped by 40% since we started using it.",
-                  rating: 5,
-                },
-                {
-                  name: "Dr. Anita Desai",
-                  role: "Pearl Dental Studio",
-                  review: "Setting up was incredibly easy. Within a day, our AI receptionist was answering calls, booking appointments, and following up with leads automatically.",
-                  rating: 5,
-                },
-                {
-                  name: "Dr. Vikram Singh",
-                  role: "DentaCare Plus",
-                  review: "We used to lose so many patients to missed calls after hours. DentAI captures every single lead now. Our revenue has grown significantly since implementing it.",
-                  rating: 5,
-                },
-                {
-                  name: "Dr. Meera Kapoor",
-                  role: "Gentle Touch Dental",
-                  review: "The best investment we've made for our practice. The SMS follow-ups for missed calls alone have recovered dozens of patients we would have lost otherwise.",
-                  rating: 5,
-                },
-                {
-                  name: "Dr. Arjun Mehta",
-                  role: "Metro Dental Clinic",
-                  review: "Our front desk staff can finally focus on in-office patients instead of being glued to the phone. DentAI handles the calls better than we ever expected.",
-                  rating: 5,
-                },
-              ].map((review) => (
-                <div
-                  key={review.name}
-                  className="group rounded-xl border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/20"
-                >
-                  {/* Quote icon */}
-                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-blue-500">
-                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11H10v10H0z" />
-                    </svg>
-                  </div>
-
-                  {/* Stars */}
-                  <div className="mb-3 flex gap-0.5">
-                    {Array.from({ length: review.rating }).map((_, i) => (
-                      <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-yellow-400">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                      </svg>
-                    ))}
-                  </div>
-
-                  {/* Review text */}
-                  <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
-                    &ldquo;{review.review}&rdquo;
-                  </p>
-
-                  {/* Author */}
-                  <div className="flex items-center gap-3 border-t pt-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-sm font-bold text-white">
-                      {review.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold">{review.name}</p>
-                      <p className="text-xs text-muted-foreground">{review.role}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* CTA Banner */}
         <section className="py-6">
           <div className="container mx-auto px-4">
@@ -464,6 +371,161 @@ export default function HomePage() {
             <p className="mt-8 text-center text-sm text-muted-foreground">
               No credit card required. Cancel anytime.
             </p>
+          </div>
+        </section>
+
+        {/* Patient Reviews - Sliding Marquee */}
+        <section className="overflow-hidden py-20">
+          <div className="container mx-auto px-4">
+            <div className="mb-14 text-center">
+              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+                What Our Patients Say{" "}
+                <span className="text-gradient">About Us</span>
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+                Real stories from dental clinics using DentAI to transform their patient experience.
+              </p>
+            </div>
+          </div>
+
+          {/* Row 1 - slides left to right */}
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent md:w-40" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white to-transparent md:w-40" />
+            <div className="flex animate-marquee-left gap-6 py-2">
+              {[
+                {
+                  name: "Dr. Priya Sharma",
+                  role: "Smile Care Dental Clinic",
+                  review: "DentAI has completely transformed how we handle patient calls. We never miss an appointment request now, and our patients love the 24/7 availability.",
+                },
+                {
+                  name: "Dr. Rajesh Patel",
+                  role: "BrightSmile Dentistry",
+                  review: "The AI receptionist sounds so natural that most patients don't even realize they're talking to AI. Our no-show rate dropped by 40% since we started using it.",
+                },
+                {
+                  name: "Dr. Anita Desai",
+                  role: "Pearl Dental Studio",
+                  review: "Setting up was incredibly easy. Within a day, our AI receptionist was answering calls, booking appointments, and following up with leads automatically.",
+                },
+                {
+                  name: "Dr. Priya Sharma",
+                  role: "Smile Care Dental Clinic",
+                  review: "DentAI has completely transformed how we handle patient calls. We never miss an appointment request now, and our patients love the 24/7 availability.",
+                },
+                {
+                  name: "Dr. Rajesh Patel",
+                  role: "BrightSmile Dentistry",
+                  review: "The AI receptionist sounds so natural that most patients don't even realize they're talking to AI. Our no-show rate dropped by 40% since we started using it.",
+                },
+                {
+                  name: "Dr. Anita Desai",
+                  role: "Pearl Dental Studio",
+                  review: "Setting up was incredibly easy. Within a day, our AI receptionist was answering calls, booking appointments, and following up with leads automatically.",
+                },
+              ].map((review, idx) => (
+                <div
+                  key={`row1-${idx}`}
+                  className="w-[320px] flex-shrink-0 rounded-xl border bg-card p-6 shadow-sm md:w-[380px]"
+                >
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-blue-500">
+                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11H10v10H0z" />
+                    </svg>
+                  </div>
+                  <div className="mb-3 flex gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-yellow-400">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
+                    &ldquo;{review.review}&rdquo;
+                  </p>
+                  <div className="flex items-center gap-3 border-t pt-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-sm font-bold text-white">
+                      {review.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">{review.name}</p>
+                      <p className="text-xs text-muted-foreground">{review.role}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Row 2 - slides right to left */}
+          <div className="relative mt-6">
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent md:w-40" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white to-transparent md:w-40" />
+            <div className="flex animate-marquee-right gap-6 py-2">
+              {[
+                {
+                  name: "Dr. Vikram Singh",
+                  role: "DentaCare Plus",
+                  review: "We used to lose so many patients to missed calls after hours. DentAI captures every single lead now. Our revenue has grown significantly since implementing it.",
+                },
+                {
+                  name: "Dr. Meera Kapoor",
+                  role: "Gentle Touch Dental",
+                  review: "The best investment we've made for our practice. The SMS follow-ups for missed calls alone have recovered dozens of patients we would have lost otherwise.",
+                },
+                {
+                  name: "Dr. Arjun Mehta",
+                  role: "Metro Dental Clinic",
+                  review: "Our front desk staff can finally focus on in-office patients instead of being glued to the phone. DentAI handles the calls better than we ever expected.",
+                },
+                {
+                  name: "Dr. Vikram Singh",
+                  role: "DentaCare Plus",
+                  review: "We used to lose so many patients to missed calls after hours. DentAI captures every single lead now. Our revenue has grown significantly since implementing it.",
+                },
+                {
+                  name: "Dr. Meera Kapoor",
+                  role: "Gentle Touch Dental",
+                  review: "The best investment we've made for our practice. The SMS follow-ups for missed calls alone have recovered dozens of patients we would have lost otherwise.",
+                },
+                {
+                  name: "Dr. Arjun Mehta",
+                  role: "Metro Dental Clinic",
+                  review: "Our front desk staff can finally focus on in-office patients instead of being glued to the phone. DentAI handles the calls better than we ever expected.",
+                },
+              ].map((review, idx) => (
+                <div
+                  key={`row2-${idx}`}
+                  className="w-[320px] flex-shrink-0 rounded-xl border bg-card p-6 shadow-sm md:w-[380px]"
+                >
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-blue-500">
+                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11H10v10H0z" />
+                    </svg>
+                  </div>
+                  <div className="mb-3 flex gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-yellow-400">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
+                    &ldquo;{review.review}&rdquo;
+                  </p>
+                  <div className="flex items-center gap-3 border-t pt-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-sm font-bold text-white">
+                      {review.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">{review.name}</p>
+                      <p className="text-xs text-muted-foreground">{review.role}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
