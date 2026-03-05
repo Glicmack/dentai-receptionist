@@ -232,86 +232,188 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* What Makes Us Different */}
-        <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 py-20 text-white">
-          <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-blue-400/10 blur-3xl" />
-          <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-blue-300/10 blur-3xl" />
-
+        {/* How It Works - Timeline */}
+        <section className="relative overflow-hidden bg-[#1a1a2e] py-24 text-white">
           <div className="container relative mx-auto px-4">
-            <h2 className="mb-12 text-center text-3xl font-bold tracking-tight md:text-4xl">
-              What Makes Us Different<br />From Others
-            </h2>
+            <div className="mb-20 text-center">
+              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+                How DentAI{" "}
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-orange-300">Works</span>
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-gray-400">
+                Get started in 3 simple steps and transform your clinic&apos;s front desk.
+              </p>
+            </div>
 
-            <div className="grid items-center gap-10 md:grid-cols-2">
-              {/* Left - Feature Cards */}
-              <div className="space-y-5">
-                {[
-                  {
-                    num: "01",
-                    title: "Advanced Technology",
-                    desc: "We use AI-powered tools such as voice recognition, smart scheduling, and real-time analytics. Our goal is to ensure efficient operations and exceptional patient experience.",
-                  },
-                  {
-                    num: "02",
-                    title: "A Dedicated AI Team",
-                    desc: "Your AI receptionist works 24/7 without breaks. It answers every call, books appointments, captures leads, and follows up — so your team can focus on patient care.",
-                  },
-                  {
-                    num: "03",
-                    title: "Personalized Care",
-                    desc: "Our AI is customized to your clinic. It learns your services, hours, tone, and policies — creating personalized interactions that feel natural and professional.",
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.num}
-                    className="rounded-xl bg-white p-6 text-foreground shadow-lg transition-transform hover:-translate-y-0.5"
-                  >
-                    <span className="text-sm font-bold text-blue-600">{item.num}</span>
-                    <h3 className="mt-1 text-lg font-bold">{item.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground">{item.desc}</p>
+            {/* Timeline */}
+            <div className="relative">
+              {/* Vertical line */}
+              <div className="absolute left-1/2 top-0 hidden h-full w-0.5 -translate-x-1/2 bg-gradient-to-b from-orange-400 via-orange-500 to-orange-400 md:block" />
+
+              {/* Step 1 */}
+              <div className="relative mb-24 grid items-center gap-10 md:grid-cols-2">
+                {/* Left - Visual */}
+                <div className="relative flex justify-center md:justify-end md:pr-16">
+                  <div className="relative">
+                    <div className="absolute -left-6 -top-6 h-40 w-40 rounded-full bg-orange-500/20 blur-2xl" />
+                    <div className="relative space-y-3">
+                      <div className="rounded-xl bg-white/10 p-4 backdrop-blur-sm">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-500/20">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="text-orange-400">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-400">Clinic Hours</p>
+                            <p className="text-sm font-semibold">Mon-Sat, 9AM - 7PM</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="rounded-xl bg-white/10 p-4 backdrop-blur-sm">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/20">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="text-blue-400">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-400">Services</p>
+                            <p className="text-sm font-semibold">12 Services Configured</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="rounded-xl bg-white/10 p-4 backdrop-blur-sm">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/20">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="text-green-400">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-400">Status</p>
+                            <p className="text-sm font-semibold text-green-400">AI Active &amp; Ready</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                ))}
+                </div>
+                {/* Center dot */}
+                <div className="absolute left-1/2 top-1/2 hidden h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-orange-400 bg-[#1a1a2e] md:block" />
+                {/* Right - Text */}
+                <div className="md:pl-16">
+                  <span className="inline-block rounded-full bg-orange-500/20 px-3 py-1 text-xs font-semibold text-orange-400">STEP #1</span>
+                  <h3 className="mt-4 font-serif text-2xl font-bold italic md:text-3xl">Set Up Your<br />AI Receptionist</h3>
+                  <p className="mt-4 text-sm leading-relaxed text-gray-400">
+                    Configure your clinic&apos;s details &mdash; services, hours, tone, and policies. Our AI learns everything about your practice in minutes.
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-gray-400">
+                    Connect your Google Calendar and phone number, and your AI receptionist is ready to go.
+                  </p>
+                </div>
               </div>
 
-              {/* Right - Image Placeholder */}
-              <div className="relative mx-auto w-full max-w-md">
-                <div className="overflow-hidden rounded-2xl shadow-2xl">
-                  <div className="aspect-[3/4] bg-gradient-to-br from-blue-400/30 via-blue-300/20 to-white/10">
-                    <div className="flex h-full flex-col items-center justify-center gap-4 p-8">
-                      <svg width="80" height="80" className="text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.8}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
-                      </svg>
-                      <span className="text-sm font-medium text-white/40">Dental Care</span>
+              {/* Step 2 */}
+              <div className="relative mb-24 grid items-center gap-10 md:grid-cols-2">
+                {/* Left - Text */}
+                <div className="order-2 md:order-1 md:pr-16 md:text-right">
+                  <span className="inline-block rounded-full bg-orange-500/20 px-3 py-1 text-xs font-semibold text-orange-400">STEP #2</span>
+                  <h3 className="mt-4 font-serif text-2xl font-bold italic md:text-3xl">AI Handles<br />Every Call</h3>
+                  <p className="mt-4 text-sm leading-relaxed text-gray-400">
+                    Your AI receptionist answers every call, books appointments, captures lead information, and follows up with patients &mdash; 24/7 without breaks.
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-gray-400">
+                    Gain valuable insights about your patient interactions with real-time conversation tracking.
+                  </p>
+                </div>
+                {/* Center dot */}
+                <div className="absolute left-1/2 top-1/2 hidden h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-orange-400 bg-[#1a1a2e] md:block" />
+                {/* Right - Visual */}
+                <div className="relative order-1 flex justify-center md:order-2 md:pl-16">
+                  <div className="relative">
+                    <div className="absolute -right-6 -top-6 h-40 w-40 rounded-full bg-green-500/15 blur-2xl" />
+                    <div className="relative w-72 rounded-2xl bg-white/10 p-5 backdrop-blur-sm">
+                      <div className="mb-3 flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700">
+                          <span className="text-xs font-bold">D</span>
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold">DentAI Assistant</p>
+                          <div className="flex gap-2 text-[10px]">
+                            <span className="rounded-full bg-green-500/20 px-2 py-0.5 text-green-400">ACTIVE</span>
+                            <span className="rounded-full bg-blue-500/20 px-2 py-0.5 text-blue-400">24/7</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="space-y-2 rounded-xl bg-white/5 p-4">
+                        <div className="rounded-lg bg-blue-500/20 px-3 py-2 text-xs text-blue-200">
+                          &ldquo;Hello! Thank you for calling Smile Care Dental. How can I help you today?&rdquo;
+                        </div>
+                        <div className="ml-auto max-w-[80%] rounded-lg bg-white/10 px-3 py-2 text-xs text-gray-300">
+                          &ldquo;I&apos;d like to book a cleaning appointment&rdquo;
+                        </div>
+                        <div className="rounded-lg bg-blue-500/20 px-3 py-2 text-xs text-blue-200">
+                          &ldquo;I&apos;d be happy to help! Let me check available slots for you...&rdquo;
+                        </div>
+                      </div>
+                      <div className="mt-3 flex items-center justify-between rounded-lg bg-green-500/10 px-3 py-2">
+                        <span className="text-xs text-green-400">Appointment Booked</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="text-green-400">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
 
-        {/* CTA Banner */}
-        <section className="py-6">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col items-center justify-between gap-6 rounded-2xl bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 px-8 py-10 text-white shadow-xl shadow-blue-500/20 md:flex-row md:px-12">
-              <div>
-                <h3 className="text-2xl font-bold md:text-3xl">Premium AI Receptionist at Affordable Prices</h3>
-                <p className="mt-2 max-w-lg text-blue-100">
-                  Transform your dental clinic&apos;s front desk with AI that works 24/7 &mdash; starting at just ₹4,999/month.
-                </p>
-              </div>
-              <div className="flex flex-shrink-0 gap-3">
-                <Link href="/register">
-                  <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 shadow-lg hover:-translate-y-0.5 transition-all">
-                    Get Started
-                  </Button>
-                </Link>
-                <Link
-                  href="/pricing"
-                  className="inline-flex h-10 items-center justify-center rounded-md border-2 border-white/30 px-8 text-sm font-medium text-white transition-all hover:bg-white/10 hover:-translate-y-0.5"
-                >
-                  View Plans
-                </Link>
+              {/* Step 3 */}
+              <div className="relative grid items-center gap-10 md:grid-cols-2">
+                {/* Left - Visual */}
+                <div className="relative flex justify-center md:justify-end md:pr-16">
+                  <div className="relative">
+                    <div className="absolute -left-6 -bottom-6 h-40 w-40 rounded-full bg-blue-500/15 blur-2xl" />
+                    <div className="relative space-y-3">
+                      <div className="rounded-xl bg-white/10 p-4 backdrop-blur-sm">
+                        <p className="text-xs text-gray-400">This Month</p>
+                        <div className="mt-2 flex items-end gap-4">
+                          <div>
+                            <p className="text-2xl font-bold">247</p>
+                            <p className="text-xs text-gray-400">Calls Handled</p>
+                          </div>
+                          <div>
+                            <p className="text-2xl font-bold text-green-400">89%</p>
+                            <p className="text-xs text-gray-400">Booked Rate</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="rounded-xl bg-white/10 p-3 backdrop-blur-sm">
+                          <p className="text-lg font-bold text-orange-400">32</p>
+                          <p className="text-[10px] text-gray-400">New Leads</p>
+                        </div>
+                        <div className="rounded-xl bg-white/10 p-3 backdrop-blur-sm">
+                          <p className="text-lg font-bold text-blue-400">₹1.2L</p>
+                          <p className="text-[10px] text-gray-400">Revenue Saved</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* Center dot */}
+                <div className="absolute left-1/2 top-1/2 hidden h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-orange-400 bg-[#1a1a2e] md:block" />
+                {/* Right - Text */}
+                <div className="md:pl-16">
+                  <span className="inline-block rounded-full bg-orange-500/20 px-3 py-1 text-xs font-semibold text-orange-400">STEP #3</span>
+                  <h3 className="mt-4 font-serif text-2xl font-bold italic md:text-3xl">Track &amp; Grow<br />Your Practice</h3>
+                  <p className="mt-4 text-sm leading-relaxed text-gray-400">
+                    Monitor every conversation, track appointments, and manage leads from your dashboard. See exactly how your AI receptionist is performing.
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-gray-400">
+                    From detailed analytics to follow-up automation, our platform provides tailored insights to help your clinic grow.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -389,9 +491,7 @@ export default function HomePage() {
           </div>
 
           {/* Row 1 - slides left to right */}
-          <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent md:w-40" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white to-transparent md:w-40" />
+          <div className="marquee-fade">
             <div className="flex animate-marquee-left gap-6 py-2">
               {[
                 {
@@ -459,9 +559,7 @@ export default function HomePage() {
           </div>
 
           {/* Row 2 - slides right to left */}
-          <div className="relative mt-6">
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white to-transparent md:w-40" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white to-transparent md:w-40" />
+          <div className="marquee-fade mt-6">
             <div className="flex animate-marquee-right gap-6 py-2">
               {[
                 {

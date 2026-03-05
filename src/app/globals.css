@@ -154,19 +154,19 @@
 
 @keyframes marquee-left {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
 @keyframes marquee-right {
   0% {
-    transform: translateX(-50%);
+    transform: translate3d(-50%, 0, 0);
   }
   100% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -245,12 +245,39 @@
   }
 
   .animate-marquee-left {
-    animation: marquee-left 30s linear infinite;
+    animation: marquee-left 40s linear infinite;
+    will-change: transform;
+    backface-visibility: hidden;
   }
 
   .animate-marquee-right {
-    animation: marquee-right 30s linear infinite;
+    animation: marquee-right 40s linear infinite;
+    will-change: transform;
+    backface-visibility: hidden;
   }
+
+  .animate-marquee-left:hover,
+  .animate-marquee-right:hover {
+    animation-play-state: paused;
+  }
+}
+
+/* Marquee fade edges */
+.marquee-fade {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
 }
 
 /* Phone Input Styles */
