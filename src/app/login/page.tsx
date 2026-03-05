@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
@@ -15,8 +15,19 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { toast } = useToast()
   const supabase = createClient()
+
+  useEffect(() => {
+    if (searchParams.get("error") === "auth_failed") {
+      toast({
+        title: "Authentication failed",
+        description: "Google sign-in failed. Please try again.",
+        variant: "destructive",
+      })
+    }
+  }, [searchParams, toast])
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
