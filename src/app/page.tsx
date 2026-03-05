@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { MobileNav } from "@/components/MobileNav"
+import { FAQ } from "@/components/FAQ"
 
 export default function HomePage() {
   return (
@@ -217,32 +218,7 @@ export default function HomePage() {
         </section>
 
         {/* FAQ */}
-        <section className="border-t bg-muted/30 py-24">
-          <div className="container mx-auto max-w-3xl px-4">
-            <h2 className="mb-12 text-center text-3xl font-bold tracking-tight md:text-4xl">
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-4">
-              {[
-                { q: "How does the AI receptionist work?", a: "Our AI uses advanced language models to understand patient requests, answer questions about your clinic, and book appointments directly into your Google Calendar. It handles calls via voice AI and chats via an embeddable widget on your website." },
-                { q: "Can patients really book appointments through the AI?", a: "Yes! The AI checks your real-time availability in Google Calendar and books confirmed appointments. Patients receive an SMS confirmation immediately." },
-                { q: "What happens after hours?", a: "The AI works 24/7. After hours, it can still answer questions, capture lead information, and let patients know when to expect a callback." },
-                { q: "Is my patient data secure?", a: "Absolutely. All data is encrypted in transit and at rest. We follow strict data handling practices and never share patient information with third parties." },
-                { q: "Can I customize what the AI says?", a: "Yes. You can customize the greeting, tone, language, emergency policy, and add custom FAQ responses through your dashboard settings." },
-              ].map((faq) => (
-                <div key={faq.q} className="group rounded-xl border bg-card p-6 transition-all duration-200 hover:border-primary/30 hover:shadow-sm">
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="font-semibold">{faq.q}</h3>
-                    <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-muted-foreground transition-transform duration-200 group-hover:text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{faq.a}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <FAQ />
 
         {/* CTA */}
         <section className="py-24">
