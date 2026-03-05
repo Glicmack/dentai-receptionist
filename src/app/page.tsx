@@ -199,6 +199,217 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Stats Section */}
+        <section className="py-20">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              The Reasons DentAI{" "}
+              <span className="text-gradient">is Unbeatable</span>
+            </h2>
+            <div className="mx-auto mt-14 flex flex-wrap items-center justify-center gap-6 md:gap-10">
+              {[
+                { value: "50+", label: "Dental Clinics", highlighted: false },
+                { value: "5+", label: "Years Experience", highlighted: true },
+                { value: "16k+", label: "Satisfied Patients", highlighted: false },
+                { value: "24/7", label: "AI Availability", highlighted: false },
+              ].map((stat) => (
+                <div key={stat.label} className="flex flex-col items-center">
+                  <div
+                    className={`flex h-28 w-28 flex-col items-center justify-center rounded-full border-4 shadow-md transition-transform hover:scale-105 md:h-32 md:w-32 ${
+                      stat.highlighted
+                        ? "border-blue-600 bg-gradient-to-br from-blue-500 to-blue-700 text-white"
+                        : "border-blue-200 bg-white text-foreground"
+                    }`}
+                  >
+                    <span className="text-2xl font-bold md:text-3xl">{stat.value}</span>
+                    <span className={`text-[10px] font-medium uppercase tracking-wider md:text-xs ${stat.highlighted ? "text-blue-100" : "text-muted-foreground"}`}>
+                      {stat.label}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* What Makes Us Different */}
+        <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 py-20 text-white">
+          <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-blue-400/10 blur-3xl" />
+          <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-blue-300/10 blur-3xl" />
+
+          <div className="container relative mx-auto px-4">
+            <h2 className="mb-12 text-center text-3xl font-bold tracking-tight md:text-4xl">
+              What Makes Us Different<br />From Others
+            </h2>
+
+            <div className="grid items-center gap-10 md:grid-cols-2">
+              {/* Left - Feature Cards */}
+              <div className="space-y-5">
+                {[
+                  {
+                    num: "01",
+                    title: "Advanced Technology",
+                    desc: "We use AI-powered tools such as voice recognition, smart scheduling, and real-time analytics. Our goal is to ensure efficient operations and exceptional patient experience.",
+                  },
+                  {
+                    num: "02",
+                    title: "A Dedicated AI Team",
+                    desc: "Your AI receptionist works 24/7 without breaks. It answers every call, books appointments, captures leads, and follows up — so your team can focus on patient care.",
+                  },
+                  {
+                    num: "03",
+                    title: "Personalized Care",
+                    desc: "Our AI is customized to your clinic. It learns your services, hours, tone, and policies — creating personalized interactions that feel natural and professional.",
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.num}
+                    className="rounded-xl bg-white p-6 text-foreground shadow-lg transition-transform hover:-translate-y-0.5"
+                  >
+                    <span className="text-sm font-bold text-blue-600">{item.num}</span>
+                    <h3 className="mt-1 text-lg font-bold">{item.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Right - Image Placeholder */}
+              <div className="relative mx-auto w-full max-w-md">
+                <div className="overflow-hidden rounded-2xl shadow-2xl">
+                  <div className="aspect-[3/4] bg-gradient-to-br from-blue-400/30 via-blue-300/20 to-white/10">
+                    <div className="flex h-full flex-col items-center justify-center gap-4 p-8">
+                      <svg width="80" height="80" className="text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.8}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
+                      </svg>
+                      <span className="text-sm font-medium text-white/40">Dental Care</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Patient Reviews */}
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <div className="mb-14 text-center">
+              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+                What Our Patients Say{" "}
+                <span className="text-gradient">About Us</span>
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+                Real stories from dental clinics using DentAI to transform their patient experience.
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-3">
+              {[
+                {
+                  name: "Dr. Priya Sharma",
+                  role: "Smile Care Dental Clinic",
+                  review: "DentAI has completely transformed how we handle patient calls. We never miss an appointment request now, and our patients love the 24/7 availability.",
+                  rating: 5,
+                },
+                {
+                  name: "Dr. Rajesh Patel",
+                  role: "BrightSmile Dentistry",
+                  review: "The AI receptionist sounds so natural that most patients don't even realize they're talking to AI. Our no-show rate dropped by 40% since we started using it.",
+                  rating: 5,
+                },
+                {
+                  name: "Dr. Anita Desai",
+                  role: "Pearl Dental Studio",
+                  review: "Setting up was incredibly easy. Within a day, our AI receptionist was answering calls, booking appointments, and following up with leads automatically.",
+                  rating: 5,
+                },
+                {
+                  name: "Dr. Vikram Singh",
+                  role: "DentaCare Plus",
+                  review: "We used to lose so many patients to missed calls after hours. DentAI captures every single lead now. Our revenue has grown significantly since implementing it.",
+                  rating: 5,
+                },
+                {
+                  name: "Dr. Meera Kapoor",
+                  role: "Gentle Touch Dental",
+                  review: "The best investment we've made for our practice. The SMS follow-ups for missed calls alone have recovered dozens of patients we would have lost otherwise.",
+                  rating: 5,
+                },
+                {
+                  name: "Dr. Arjun Mehta",
+                  role: "Metro Dental Clinic",
+                  review: "Our front desk staff can finally focus on in-office patients instead of being glued to the phone. DentAI handles the calls better than we ever expected.",
+                  rating: 5,
+                },
+              ].map((review) => (
+                <div
+                  key={review.name}
+                  className="group rounded-xl border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/20"
+                >
+                  {/* Quote icon */}
+                  <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-blue-50">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className="text-blue-500">
+                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11H10v10H0z" />
+                    </svg>
+                  </div>
+
+                  {/* Stars */}
+                  <div className="mb-3 flex gap-0.5">
+                    {Array.from({ length: review.rating }).map((_, i) => (
+                      <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-yellow-400">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+
+                  {/* Review text */}
+                  <p className="mb-5 text-sm leading-relaxed text-muted-foreground">
+                    &ldquo;{review.review}&rdquo;
+                  </p>
+
+                  {/* Author */}
+                  <div className="flex items-center gap-3 border-t pt-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-sm font-bold text-white">
+                      {review.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">{review.name}</p>
+                      <p className="text-xs text-muted-foreground">{review.role}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Banner */}
+        <section className="py-6">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col items-center justify-between gap-6 rounded-2xl bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 px-8 py-10 text-white shadow-xl shadow-blue-500/20 md:flex-row md:px-12">
+              <div>
+                <h3 className="text-2xl font-bold md:text-3xl">Premium AI Receptionist at Affordable Prices</h3>
+                <p className="mt-2 max-w-lg text-blue-100">
+                  Transform your dental clinic&apos;s front desk with AI that works 24/7 &mdash; starting at just ₹4,999/month.
+                </p>
+              </div>
+              <div className="flex flex-shrink-0 gap-3">
+                <Link href="/register">
+                  <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 shadow-lg hover:-translate-y-0.5 transition-all">
+                    Get Started
+                  </Button>
+                </Link>
+                <Link
+                  href="/pricing"
+                  className="inline-flex h-10 items-center justify-center rounded-md border-2 border-white/30 px-8 text-sm font-medium text-white transition-all hover:bg-white/10 hover:-translate-y-0.5"
+                >
+                  View Plans
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Pricing Preview */}
         <section className="py-24">
           <div className="container mx-auto px-4">
