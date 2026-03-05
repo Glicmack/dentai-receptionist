@@ -75,14 +75,14 @@ export default function HomePage() {
               {/* Right Images */}
               <div className="animate-fade-up-delay-1 relative mx-auto w-full max-w-lg md:max-w-none">
                 {/* Main image - top right */}
-                <div className="relative ml-auto w-[85%] overflow-hidden rounded-2xl shadow-2xl">
+                <div className="animate-wave relative ml-auto w-[85%] overflow-hidden rounded-2xl shadow-2xl">
                   <div className="relative aspect-[4/3]">
                     <Image src="/hero-dental-1.jpg" alt="Modern dental office" fill className="object-cover" sizes="(max-width: 768px) 85vw, 40vw" priority />
                   </div>
                 </div>
 
                 {/* Secondary image - bottom left, overlapping */}
-                <div className="absolute -bottom-6 left-0 z-10 w-[60%] overflow-hidden rounded-2xl border-4 border-white shadow-xl">
+                <div className="animate-wave-delayed absolute -bottom-6 left-0 z-10 w-[60%] overflow-hidden rounded-2xl border-4 border-white shadow-xl">
                   <div className="relative aspect-[4/3]">
                     <Image src="/hero-dental-2.jpg" alt="Dentist treating patient" fill className="object-cover" sizes="(max-width: 768px) 60vw, 25vw" priority />
                   </div>
