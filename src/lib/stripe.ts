@@ -48,23 +48,34 @@ export async function createPortalSession(customerId: string, returnUrl: string)
   return session
 }
 
-export function getPriceIdForPlan(plan: string, annual: boolean): string | null {
-  const prices: Record<string, { monthly: string; annual: string }> = {
+export function getPriceIdForPlan(plan: string, annual: boolean): { priceId: string | null; error?: string } {
+  const validPlans = ["starter", "growth", "pro"]
+  if (!validPlans.includes(plan)) {
+    return { priceId: null, error: `Invalid plan "${plan}". Valid plans: ${validPlans.join(", ")}` }
+  }
+
+  const prices: Record<string, { monthly: string | undefined; annual: string | undefined }> = {
     starter: {
-      monthly: process.env.STRIPE_STARTER_PRICE_ID || "",
-      annual: process.env.STRIPE_STARTER_ANNUAL_PRICE_ID || process.env.STRIPE_STARTER_PRICE_ID || "",
+      monthly: process.env.STRIPE_STARTER_PRICE_ID,
+      annual: process.env.STRIPE_STARTER_ANNUAL_PRICE_ID || process.env.STRIPE_STARTER_PRICE_ID,
     },
     growth: {
-      monthly: process.env.STRIPE_GROWTH_PRICE_ID || "",
-      annual: process.env.STRIPE_GROWTH_ANNUAL_PRICE_ID || process.env.STRIPE_GROWTH_PRICE_ID || "",
+      monthly: process.env.STRIPE_GROWTH_PRICE_ID,
+      annual: process.env.STRIPE_GROWTH_ANNUAL_PRICE_ID || process.env.STRIPE_GROWTH_PRICE_ID,
     },
     pro: {
-      monthly: process.env.STRIPE_PRO_PRICE_ID || "",
-      annual: process.env.STRIPE_PRO_ANNUAL_PRICE_ID || process.env.STRIPE_PRO_PRICE_ID || "",
+      monthly: process.env.STRIPE_PRO_PRICE_ID,
+      annual: process.env.STRIPE_PRO_ANNUAL_PRICE_ID || process.env.STRIPE_PRO_PRICE_ID,
     },
   }
 
   const planPrices = prices[plan]
-  if (!planPrices) return null
-  return annual ? planPrices.annual : planPrices.monthly
+  const priceId = annual ? planPrices.annual : planPrices.monthly
+
+  if (!priceId) {
+    const billing = annual ? "annual" : "monthly"
+    return { priceId: null, error: `Stripe price ID not configured for ${plan} (${billing}). Please set the STRIPE_${plan.toUpperCase()}_PRICE_ID environment variable.` }
+  }
+
+  return { priceId }
 }

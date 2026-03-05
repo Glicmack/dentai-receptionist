@@ -6,6 +6,14 @@ export async function updateSession(request: NextRequest) {
   const isProtectedRoute = path.startsWith('/dashboard') || path.startsWith('/onboarding')
   const isAuthRoute = path === '/login' || path === '/register'
 
+  // Handle OAuth redirect landing on root with code parameter
+  // Supabase sometimes redirects to /?code=... instead of /auth/callback?code=...
+  if (path === '/' && request.nextUrl.searchParams.has('code')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/auth/callback'
+    return NextResponse.redirect(url)
+  }
+
   // If Supabase is not configured, block protected routes
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     if (isProtectedRoute) {

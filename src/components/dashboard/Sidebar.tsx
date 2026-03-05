@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -73,6 +74,13 @@ export function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
+  const [userEmail, setUserEmail] = useState<string | null>(null)
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUserEmail(user?.email ?? null)
+    })
+  }, [supabase])
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -156,8 +164,18 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           </div>
         </div>
 
-        {/* Logout */}
+        {/* User info & Logout */}
         <div className="border-t p-3">
+          {userEmail && (
+            <div className="mb-2 flex items-center gap-2 rounded-lg px-3 py-2">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                {userEmail[0].toUpperCase()}
+              </div>
+              <span className="truncate text-xs text-muted-foreground" title={userEmail}>
+                {userEmail}
+              </span>
+            </div>
+          )}
           <Button
             variant="ghost"
             className="w-full justify-start text-muted-foreground hover:text-foreground"

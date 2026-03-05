@@ -25,10 +25,13 @@ export async function POST(request: Request) {
     const body = await request.json()
     const { plan, annual } = body
 
-    const priceId = getPriceIdForPlan(plan, annual || false)
-    if (!priceId) {
-      return NextResponse.json({ error: "Invalid plan" }, { status: 400 })
+    const result = getPriceIdForPlan(plan, annual || false)
+    if (!result.priceId) {
+      console.error("Plan selection error:", result.error)
+      return NextResponse.json({ error: result.error || "Invalid plan" }, { status: 400 })
     }
+
+    const priceId = result.priceId
 
     const origin = request.headers.get("origin") || process.env.NEXT_PUBLIC_APP_URL || ""
 
