@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx shadcn@latest add button card input label select textarea badge dialog sheet tabs table toast dropdown-menu avatar separator skeleton switch calendar popover scroll-area -y)"
+    ]
+  }
+}
