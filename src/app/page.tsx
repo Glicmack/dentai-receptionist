@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { MobileNav } from "@/components/MobileNav"
 import { FAQ } from "@/components/FAQ"
@@ -75,27 +76,15 @@ export default function HomePage() {
               <div className="animate-fade-up-delay-1 relative mx-auto w-full max-w-lg md:max-w-none">
                 {/* Main image - top right */}
                 <div className="relative ml-auto w-[85%] overflow-hidden rounded-2xl shadow-2xl">
-                  <div className="aspect-[4/3] bg-gradient-to-br from-blue-100 via-blue-50 to-white">
-                    {/* Replace with: <Image src="/hero-dental-1.jpg" alt="Dental care" fill className="object-cover" /> */}
-                    <div className="flex h-full flex-col items-center justify-center gap-3 p-8">
-                      <svg width="80" height="80" className="text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.8}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      <span className="text-sm font-medium text-blue-300">Dental Professional</span>
-                    </div>
+                  <div className="relative aspect-[4/3]">
+                    <Image src="/hero-dental-1.jpg" alt="Modern dental office" fill className="object-cover" sizes="(max-width: 768px) 85vw, 40vw" priority />
                   </div>
                 </div>
 
                 {/* Secondary image - bottom left, overlapping */}
                 <div className="absolute -bottom-6 left-0 z-10 w-[60%] overflow-hidden rounded-2xl border-4 border-white shadow-xl">
-                  <div className="aspect-[4/3] bg-gradient-to-br from-sky-100 via-blue-50 to-white">
-                    {/* Replace with: <Image src="/hero-dental-2.jpg" alt="Patient care" fill className="object-cover" /> */}
-                    <div className="flex h-full flex-col items-center justify-center gap-2 p-6">
-                      <svg width="56" height="56" className="text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.8}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
-                      </svg>
-                      <span className="text-xs font-medium text-blue-300">Patient Care</span>
-                    </div>
+                  <div className="relative aspect-[4/3]">
+                    <Image src="/hero-dental-2.jpg" alt="Dentist treating patient" fill className="object-cover" sizes="(max-width: 768px) 60vw, 25vw" priority />
                   </div>
                 </div>
 
@@ -112,23 +101,27 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Trust Logos */}
+            {/* Trust Logos - Scrolling Marquee */}
             <div className="animate-fade-up-delay-3 mt-20 border-t pt-10">
-              <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 opacity-50 grayscale">
-                {[
-                  { name: "SmileCare", icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" },
-                  { name: "BrightDental", icon: "M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" },
-                  { name: "PearlSmile", icon: "M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" },
-                  { name: "DentaPlus", icon: "M12 4.5v15m7.5-7.5h-15" },
-                  { name: "OralFirst", icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" },
-                ].map((brand) => (
-                  <div key={brand.name} className="flex items-center gap-2 text-lg font-bold text-muted-foreground transition-opacity hover:opacity-80">
-                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d={brand.icon} />
-                    </svg>
-                    {brand.name}
-                  </div>
-                ))}
+              <div className="marquee-fade overflow-hidden">
+                <div className="animate-logo-scroll flex w-max gap-x-10 opacity-50 grayscale">
+                  {[...Array(2)].map((_, setIndex) =>
+                    [
+                      { name: "SmileCare", icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" },
+                      { name: "BrightDental", icon: "M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" },
+                      { name: "PearlSmile", icon: "M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" },
+                      { name: "DentaPlus", icon: "M12 4.5v15m7.5-7.5h-15" },
+                      { name: "OralFirst", icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" },
+                    ].map((brand) => (
+                      <div key={`${setIndex}-${brand.name}`} className="flex shrink-0 items-center gap-2 text-lg font-bold text-muted-foreground">
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d={brand.icon} />
+                        </svg>
+                        {brand.name}
+                      </div>
+                    ))
+                  )}
+                </div>
               </div>
             </div>
           </div>

@@ -170,6 +170,15 @@
   }
 }
 
+@keyframes logo-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
 /* Utility Classes */
 @layer utilities {
   .text-gradient {
@@ -259,6 +268,12 @@
   .animate-marquee-left:hover,
   .animate-marquee-right:hover {
     animation-play-state: paused;
+  }
+
+  .animate-logo-scroll {
+    animation: logo-scroll 20s linear infinite;
+    will-change: transform;
+    backface-visibility: hidden;
   }
 }
 
