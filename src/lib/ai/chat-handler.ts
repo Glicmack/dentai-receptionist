@@ -1,9 +1,16 @@
 import Anthropic from "@anthropic-ai/sdk"
 import type { TranscriptMessage } from "@/types"
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-})
+let _anthropic: Anthropic | null = null
+
+function getAnthropic() {
+  if (!_anthropic) {
+    _anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+    })
+  }
+  return _anthropic
+}
 
 interface ChatResult {
   message: string
@@ -24,7 +31,7 @@ export async function processChat(
   // Add the new user message
   messages.push({ role: "user", content: userMessage })
 
-  const response = await anthropic.messages.create({
+  const response = await getAnthropic().messages.create({
     model: "claude-sonnet-4-20250514",
     max_tokens: 500,
     system: systemPrompt,

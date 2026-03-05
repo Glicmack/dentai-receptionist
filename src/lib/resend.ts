@@ -1,6 +1,13 @@
 import { Resend } from "resend"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let _resend: Resend | null = null
+
+function getResend() {
+  if (!_resend) {
+    _resend = new Resend(process.env.RESEND_API_KEY)
+  }
+  return _resend
+}
 
 export async function sendBookingNotification(
   clinicEmail: string,
@@ -11,7 +18,7 @@ export async function sendBookingNotification(
   bookedVia: string
 ) {
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: "DentAI <noreply@dentai.com>",
       to: clinicEmail,
       subject: `New Appointment: ${patientName} - ${serviceName}`,
@@ -44,7 +51,7 @@ export async function sendDailySummary(
   }
 ) {
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: "DentAI <noreply@dentai.com>",
       to: clinicEmail,
       subject: `Daily Summary for ${clinicName}`,
