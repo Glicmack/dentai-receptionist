@@ -13,8 +13,8 @@ const PLANS = [
   {
     key: "starter",
     name: "Starter",
-    monthlyPrice: 297,
-    annualPrice: 237,
+    monthlyPrice: 4999,
+    annualPrice: 3999,
     features: [
       "Chat widget only",
       "500 conversations/month",
@@ -27,8 +27,8 @@ const PLANS = [
   {
     key: "growth",
     name: "Growth",
-    monthlyPrice: 497,
-    annualPrice: 397,
+    monthlyPrice: 9999,
+    annualPrice: 7999,
     popular: true,
     features: [
       "Chat + voice AI",
@@ -42,8 +42,8 @@ const PLANS = [
   {
     key: "pro",
     name: "Pro",
-    monthlyPrice: 797,
-    annualPrice: 637,
+    monthlyPrice: 19999,
+    annualPrice: 15999,
     features: [
       "Everything unlimited",
       "Unlimited conversations",
@@ -133,11 +133,11 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="border-b">
+      <header className="sticky top-0 z-50 glass border-b border-white/10">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <span className="text-sm font-bold text-primary-foreground">D</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 shadow-md">
+              <span className="text-sm font-bold text-white">D</span>
             </div>
             <span className="text-xl font-bold">DentAI</span>
           </Link>
@@ -152,7 +152,7 @@ export default function PricingPage() {
                   <Button variant="ghost" size="sm">Log In</Button>
                 </Link>
                 <Link href="/register">
-                  <Button size="sm">Start Free Trial</Button>
+                  <Button size="sm" className="shadow-md shadow-primary/20">Start Free Trial</Button>
                 </Link>
               </>
             )}
@@ -160,23 +160,30 @@ export default function PricingPage() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-16">
-        <div className="mb-12 text-center">
-          <h1 className="text-4xl font-bold">Simple, Transparent Pricing</h1>
-          <p className="mt-4 text-lg text-muted-foreground">
+      {/* Gradient Hero Banner */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 py-16 text-center text-white">
+        <div className="absolute inset-0 bg-grid opacity-10" />
+        <div className="pointer-events-none absolute -left-32 top-0 h-64 w-64 rounded-full bg-blue-400/20 blur-3xl" />
+        <div className="pointer-events-none absolute -right-32 bottom-0 h-64 w-64 rounded-full bg-blue-300/20 blur-3xl" />
+
+        <div className="container relative mx-auto px-4">
+          <h1 className="text-4xl font-bold tracking-tight md:text-5xl">Simple, Transparent Pricing</h1>
+          <p className="mx-auto mt-4 max-w-lg text-lg text-blue-100">
             {isLoggedIn
               ? "Choose the plan that fits your clinic"
               : "Start with a 14-day free trial. No credit card required."}
           </p>
-          <div className="mt-6 flex items-center justify-center gap-3">
-            <Label htmlFor="annual" className="text-sm">Monthly</Label>
+          <div className="mt-8 inline-flex items-center gap-3 rounded-full bg-white/10 px-4 py-2 backdrop-blur-sm">
+            <Label htmlFor="annual" className="text-sm text-blue-100 cursor-pointer">Monthly</Label>
             <Switch id="annual" checked={annual} onCheckedChange={setAnnual} />
-            <Label htmlFor="annual" className="text-sm">
-              Annual <span className="text-primary font-medium">(Save 20%)</span>
+            <Label htmlFor="annual" className="text-sm text-blue-100 cursor-pointer">
+              Annual <span className="font-medium text-white">(Save 20%)</span>
             </Label>
           </div>
         </div>
+      </div>
 
+      <main className="container mx-auto px-4 py-16">
         <div className="grid gap-8 md:grid-cols-3">
           {PLANS.map((plan) => {
             const isCurrentPlan = currentPlan === plan.key
@@ -184,12 +191,14 @@ export default function PricingPage() {
             return (
               <div
                 key={plan.name}
-                className={`relative rounded-xl border bg-card p-8 ${
-                  plan.popular && !isCurrentPlan ? "ring-2 ring-primary shadow-lg" : ""
+                className={`group relative rounded-xl border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+                  plan.popular && !isCurrentPlan
+                    ? "scale-[1.02] border-primary/30 shadow-lg shadow-primary/10 md:scale-105"
+                    : "hover:border-primary/20"
                 } ${isCurrentPlan ? "ring-2 ring-green-500 shadow-lg" : ""}`}
               >
                 {plan.popular && !isCurrentPlan && (
-                  <span className="mb-4 inline-block rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-4 py-1 text-xs font-medium text-white shadow-md">
                     Most Popular
                   </span>
                 )}
@@ -201,19 +210,19 @@ export default function PricingPage() {
                 <h3 className="text-2xl font-bold">{plan.name}</h3>
                 <p className="mt-4">
                   <span className="text-5xl font-bold">
-                    ${annual ? plan.annualPrice : plan.monthlyPrice}
+                    ₹{(annual ? plan.annualPrice : plan.monthlyPrice).toLocaleString("en-IN")}
                   </span>
                   <span className="text-muted-foreground">/month</span>
                 </p>
                 {annual && (
                   <p className="mt-1 text-sm text-muted-foreground">
-                    ${plan.annualPrice * 12}/year (save ${(plan.monthlyPrice - plan.annualPrice) * 12}/year)
+                    ₹{(plan.annualPrice * 12).toLocaleString("en-IN")}/year (save ₹{((plan.monthlyPrice - plan.annualPrice) * 12).toLocaleString("en-IN")}/year)
                   </p>
                 )}
                 <ul className="mt-8 space-y-3">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex items-center gap-2 text-sm">
-                      <svg className="h-4 w-4 shrink-0 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <svg className="h-4 w-4 shrink-0 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                       {feature}
@@ -221,7 +230,7 @@ export default function PricingPage() {
                   ))}
                 </ul>
                 <Button
-                  className="mt-8 w-full"
+                  className={`mt-8 w-full ${plan.popular ? "shadow-md shadow-primary/20" : ""}`}
                   variant={plan.popular || isCurrentPlan ? "default" : "outline"}
                   size="lg"
                   disabled={!!subscribing || loading}

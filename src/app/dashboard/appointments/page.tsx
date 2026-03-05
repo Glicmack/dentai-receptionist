@@ -148,9 +148,9 @@ export default function AppointmentsPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2">
+      <div className="inline-flex gap-1 rounded-lg bg-muted p-1">
         {["all", "confirmed", "completed", "cancelled", "no_show"].map((s) => (
-          <Button key={s} variant={filter === s ? "default" : "outline"} size="sm" onClick={() => setFilter(s)}>
+          <Button key={s} variant={filter === s ? "default" : "ghost"} size="sm" onClick={() => setFilter(s)} className={filter === s ? "shadow-sm" : ""}>
             {s === "all" ? "All" : s.charAt(0).toUpperCase() + s.slice(1).replace("_", " ")}
           </Button>
         ))}
@@ -169,7 +169,7 @@ export default function AppointmentsPage() {
           ) : (
             <div className="space-y-3">
               {appointments.map((apt) => (
-                <div key={apt.id} className="flex items-center justify-between rounded-lg border p-4">
+                <div key={apt.id} className="flex items-center justify-between rounded-lg border p-4 transition-all duration-200 hover:shadow-sm hover:border-primary/20">
                   <div className="space-y-1">
                     <p className="font-medium">{apt.patient_name}</p>
                     <p className="text-sm text-muted-foreground">

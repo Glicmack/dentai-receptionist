@@ -102,8 +102,8 @@ export default function OnboardingPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  async function saveStepData() {
-    if (!clinicId) return
+  async function saveStepData(): Promise<boolean> {
+    if (!clinicId) return false
 
     setLoading(true)
     let updateData = {}
@@ -134,13 +134,17 @@ export default function OnboardingPage() {
         description: error.message,
         variant: "destructive",
       })
+      setLoading(false)
+      return false
     }
     setLoading(false)
+    return true
   }
 
   async function handleNext() {
     if (step < 4) {
-      await saveStepData()
+      const saved = await saveStepData()
+      if (!saved) return
     }
     setStep(step + 1)
   }
@@ -162,11 +166,38 @@ export default function OnboardingPage() {
           <span>Step {step + 1} of {STEPS.length}</span>
           <span>{Math.round(((step + 1) / STEPS.length) * 100)}% complete</span>
         </div>
-        <div className="mt-2 h-2 rounded-full bg-muted">
+        <div className="mt-2 h-2 rounded-full bg-muted overflow-hidden">
           <div
-            className="h-2 rounded-full bg-primary transition-all"
+            className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-500 ease-out"
             style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
           />
+        </div>
+        {/* Step dots */}
+        <div className="mt-4 flex justify-between">
+          {STEPS.map((s, i) => (
+            <div key={s.title} className="flex flex-col items-center gap-1.5">
+              <div
+                className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-medium transition-all duration-300 ${
+                  i < step
+                    ? "bg-blue-500 text-white"
+                    : i === step
+                      ? "bg-blue-500 text-white shadow-md shadow-blue-500/30 scale-110"
+                      : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {i < step ? (
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  i + 1
+                )}
+              </div>
+              <span className={`hidden sm:block text-[10px] ${i === step ? "text-foreground font-medium" : "text-muted-foreground"}`}>
+                {s.title}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 

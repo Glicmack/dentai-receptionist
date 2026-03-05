@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { PhoneInput } from "@/components/ui/phone-input"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -123,7 +124,7 @@ function SettingsContent() {
       </div>
 
       <Tabs defaultValue="profile">
-        <TabsList className="flex-wrap">
+        <TabsList className="flex-wrap h-auto gap-1 bg-muted/50 p-1">
           <TabsTrigger value="profile">Clinic Profile</TabsTrigger>
           <TabsTrigger value="hours">Business Hours</TabsTrigger>
           <TabsTrigger value="services">Services</TabsTrigger>
@@ -146,7 +147,7 @@ function SettingsContent() {
                 </div>
                 <div className="space-y-2">
                   <Label>Phone</Label>
-                  <Input value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} />
+                  <PhoneInput value={profile.phone} onChange={(value) => setProfile({ ...profile, phone: value })} />
                 </div>
               </div>
               <div className="space-y-2">
@@ -269,6 +270,36 @@ function SettingsContent() {
         {/* Integrations */}
         <TabsContent value="integrations">
           <div className="space-y-4">
+            {/* Voice AI */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <svg className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                  </svg>
+                  Voice AI (Vapi)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  Voice AI lets patients call your clinic and interact with an AI receptionist that can answer questions, check availability, and book appointments by phone.
+                </p>
+                {process.env.NEXT_PUBLIC_VAPI_PHONE_NUMBER ? (
+                  <div className="flex items-center gap-2">
+                    <Badge variant="default" className="bg-green-500">Active</Badge>
+                    <span className="text-sm font-medium">{process.env.NEXT_PUBLIC_VAPI_PHONE_NUMBER}</span>
+                  </div>
+                ) : (
+                  <div className="rounded-lg border border-dashed p-4">
+                    <p className="text-sm font-medium">Setup required</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Add your Vapi phone number as <code className="rounded bg-muted px-1">VAPI_PHONE_NUMBER</code> and <code className="rounded bg-muted px-1">NEXT_PUBLIC_VAPI_PHONE_NUMBER</code> environment variables to enable voice AI.
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader><CardTitle>Google Calendar</CardTitle></CardHeader>
               <CardContent>

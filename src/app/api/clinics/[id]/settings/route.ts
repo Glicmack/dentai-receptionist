@@ -10,6 +10,17 @@ export async function GET(
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
+    // Verify the user owns this clinic
+    const { data: userData } = await supabase
+      .from("users")
+      .select("clinic_id")
+      .eq("id", user.id)
+      .single()
+
+    if (!userData?.clinic_id || userData.clinic_id !== params.id) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    }
+
     const { data, error } = await supabase
       .from("clinics")
       .select("*")
@@ -31,6 +42,17 @@ export async function PUT(
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
+    // Verify the user owns this clinic
+    const { data: userData } = await supabase
+      .from("users")
+      .select("clinic_id")
+      .eq("id", user.id)
+      .single()
+
+    if (!userData?.clinic_id || userData.clinic_id !== params.id) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    }
 
     const body = await request.json()
 

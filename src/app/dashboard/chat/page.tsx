@@ -149,7 +149,7 @@ export default function DashboardChatPage() {
             onClick={() => {
               setInput(suggestion)
             }}
-            className="whitespace-nowrap rounded-full border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            className="whitespace-nowrap rounded-full border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-all duration-200 hover:bg-primary/5 hover:border-primary/30 hover:text-foreground hover:shadow-sm"
           >
             {suggestion}
           </button>
@@ -159,7 +159,7 @@ export default function DashboardChatPage() {
       {/* Chat window */}
       <Card className="overflow-hidden">
         {/* Chat header */}
-        <div className="flex items-center gap-3 border-b bg-primary px-4 py-3 text-primary-foreground">
+        <div className="flex items-center gap-3 border-b bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 text-white">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
             <span className="text-sm font-bold">
               {clinic?.name?.charAt(0) || "D"}

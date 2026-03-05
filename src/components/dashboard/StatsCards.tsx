@@ -11,10 +11,12 @@ interface StatCardProps {
 
 function StatCard({ title, value, description, icon }: StatCardProps) {
   return (
-    <Card>
+    <Card className="group hover:-translate-y-0.5 hover:shadow-lg hover:border-primary/20">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <div className="text-muted-foreground">{icon}</div>
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-100">
+          {icon}
+        </div>
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
@@ -63,7 +65,7 @@ export function StatsCards({
       />
       <StatCard
         title="Estimated Revenue"
-        value={`$${estimatedRevenue.toLocaleString()}`}
+        value={`₹${estimatedRevenue.toLocaleString("en-IN")}`}
         description="From booked appointments"
         icon={
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

@@ -14,13 +14,13 @@ import {
 import type { Service } from "@/types"
 
 const SUGGESTED_SERVICES: Service[] = [
-  { name: "Cleaning", duration: 60, price: "from $150" },
-  { name: "Checkup", duration: 30, price: "from $100" },
-  { name: "X-Ray", duration: 30, price: "from $75" },
-  { name: "Whitening", duration: 90, price: "from $300" },
-  { name: "Filling", duration: 45, price: "from $200" },
-  { name: "Crown", duration: 90, price: "from $800" },
-  { name: "Root Canal", duration: 90, price: "from $700" },
+  { name: "Cleaning", duration: 60, price: "from ₹1,500" },
+  { name: "Checkup", duration: 30, price: "from ₹800" },
+  { name: "X-Ray", duration: 30, price: "from ₹500" },
+  { name: "Whitening", duration: 90, price: "from ₹5,000" },
+  { name: "Filling", duration: 45, price: "from ₹2,000" },
+  { name: "Crown", duration: 90, price: "from ₹8,000" },
+  { name: "Root Canal", duration: 90, price: "from ₹7,000" },
   { name: "Emergency", duration: 60, price: "varies" },
 ]
 
@@ -137,7 +137,7 @@ export function ServicesStep({ data, onChange }: Props) {
             </SelectContent>
           </Select>
           <Input
-            placeholder="from $100"
+            placeholder="from ₹800"
             value={newService.price}
             onChange={(e) =>
               setNewService({ ...newService, price: e.target.value })

@@ -55,7 +55,25 @@ const config: Config = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+  		animation: {
+  			'fade-up': 'fade-up 0.6s ease-out both',
+  			'fade-up-delay-1': 'fade-up 0.6s ease-out 0.1s both',
+  			'fade-up-delay-2': 'fade-up 0.6s ease-out 0.2s both',
+  			'fade-up-delay-3': 'fade-up 0.6s ease-out 0.3s both',
+  			'fade-up-delay-4': 'fade-up 0.6s ease-out 0.4s both',
+  			'slide-in-left': 'slide-in-left 0.5s ease-out both',
+  			'slide-in-right': 'slide-in-right 0.5s ease-out both',
+  			'scale-in': 'scale-in 0.4s ease-out both',
+  			'float': 'float 6s ease-in-out infinite',
+  			'shimmer': 'shimmer 2s linear infinite',
+  			'pulse-soft': 'pulse-soft 3s ease-in-out infinite',
+  			'gradient-x': 'gradient-x 3s ease infinite',
+  		},
+  		backgroundImage: {
+  			'hero-gradient': 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #bfdbfe 100%)',
+  			'gradient-radial': 'radial-gradient(ellipse at center, var(--tw-gradient-stops))',
+  		},
   	}
   },
   plugins: [require("tailwindcss-animate")],

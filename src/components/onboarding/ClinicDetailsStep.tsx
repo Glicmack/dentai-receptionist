@@ -2,6 +2,7 @@
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { PhoneInput } from "@/components/ui/phone-input"
 import {
   Select,
   SelectContent,
@@ -53,11 +54,11 @@ export function ClinicDetailsStep({ data, onChange }: Props) {
       </div>
       <div className="space-y-2">
         <Label htmlFor="phone">Phone number</Label>
-        <Input
+        <PhoneInput
           id="phone"
           value={data.phone}
-          onChange={(e) => update("phone", e.target.value)}
-          placeholder="(555) 123-4567"
+          onChange={(value) => update("phone", value)}
+          placeholder="Enter phone number"
         />
       </div>
       <div className="space-y-2">

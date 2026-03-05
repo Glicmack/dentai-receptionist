@@ -54,9 +54,9 @@ export default function ConversationsPage() {
       </div>
 
       <div className="flex items-center gap-4">
-        <div className="flex gap-2">
+        <div className="inline-flex gap-1 rounded-lg bg-muted p-1">
           {["all", "chat", "voice"].map((ch) => (
-            <Button key={ch} variant={filter === ch ? "default" : "outline"} size="sm" onClick={() => setFilter(ch)}>
+            <Button key={ch} variant={filter === ch ? "default" : "ghost"} size="sm" onClick={() => setFilter(ch)} className={filter === ch ? "shadow-sm" : ""}>
               {ch === "all" ? "All" : ch === "chat" ? "Chat" : "Voice"}
             </Button>
           ))}
@@ -81,7 +81,7 @@ export default function ConversationsPage() {
               {conversations.map((conv) => (
                 <button
                   key={conv.id}
-                  className="flex w-full items-center justify-between rounded-lg border p-4 text-left hover:bg-muted/50 transition-colors"
+                  className="flex w-full items-center justify-between rounded-lg border p-4 text-left transition-all duration-200 hover:shadow-sm hover:border-primary/20"
                   onClick={() => setSelected(conv)}
                 >
                   <div className="flex items-center gap-3">

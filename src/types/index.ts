@@ -177,6 +177,32 @@ export interface AvailableSlot {
   displayDate: string
 }
 
+// Patient Portal Types
+export interface PatientAppointment {
+  id: string
+  service_type: string
+  duration_minutes: number
+  appointment_datetime: string
+  status: Appointment['status']
+  booked_via: Appointment['booked_via']
+  notes: string | null
+  created_at: string
+  patient_name: string
+}
+
+export interface PatientClinicInfo {
+  name: string
+  phone: string | null
+  address: string | null
+  city: string | null
+  state: string | null
+  hours: BusinessHours
+  services: Service[]
+  insurance_accepted: string[]
+  emergency_policy: string
+  timezone: string
+}
+
 // WhatsApp Types
 export interface WhatsAppSession {
   id: string

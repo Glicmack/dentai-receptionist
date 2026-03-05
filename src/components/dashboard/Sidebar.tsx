@@ -85,7 +85,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       {/* Mobile overlay backdrop */}
       {open && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
           onClick={onClose}
         />
       )}
@@ -100,8 +100,8 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         {/* Logo */}
         <div className="flex h-16 items-center justify-between border-b px-6">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <span className="text-sm font-bold text-primary-foreground">D</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 shadow-md">
+              <span className="text-sm font-bold text-white">D</span>
             </div>
             <span className="text-xl font-bold">DentAI</span>
           </div>
@@ -127,12 +127,15 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                 href={item.href}
                 onClick={onClose}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                  "relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
                   isActive
                     ? "bg-primary/10 text-primary"
                     : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
+                {isActive && (
+                  <div className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-primary" />
+                )}
                 {item.icon}
                 {item.label}
               </Link>
@@ -140,11 +143,24 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           })}
         </nav>
 
+        {/* Upgrade CTA */}
+        <div className="p-3">
+          <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 p-4">
+            <p className="text-sm font-semibold text-blue-900">Upgrade to Pro</p>
+            <p className="mt-1 text-xs text-blue-700/70">Unlock unlimited conversations and premium features.</p>
+            <Link href="/pricing">
+              <Button size="sm" className="mt-3 w-full shadow-sm shadow-primary/20 text-xs h-8">
+                View Plans
+              </Button>
+            </Link>
+          </div>
+        </div>
+
         {/* Logout */}
         <div className="border-t p-3">
           <Button
             variant="ghost"
-            className="w-full justify-start text-muted-foreground"
+            className="w-full justify-start text-muted-foreground hover:text-foreground"
             onClick={handleLogout}
           >
             <svg className="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

@@ -16,6 +16,14 @@ export async function POST(request: Request) {
       )
     }
 
+    // Prevent abuse with message length limit
+    if (message.length > 2000) {
+      return NextResponse.json(
+        { error: "Message too long. Please keep messages under 2000 characters." },
+        { status: 400 }
+      )
+    }
+
     const supabase = createAdminClient()
 
     // Load clinic data

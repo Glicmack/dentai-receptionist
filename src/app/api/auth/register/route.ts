@@ -1,18 +1,6 @@
 import { NextResponse } from "next/server"
 import { createAdminClient } from "@/lib/supabase/admin"
-
-function generateSlug(name: string): string {
-  return (
-    name
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-")
-      .trim() +
-    "-" +
-    Math.random().toString(36).substring(2, 6)
-  )
-}
+import { generateSlug } from "@/lib/utils"
 
 export async function POST(request: Request) {
   try {
