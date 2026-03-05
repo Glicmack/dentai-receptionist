@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { useClinic } from "@/hooks/useClinic"
 import { Button } from "@/components/ui/button"
@@ -21,6 +21,14 @@ import { InsuranceStep } from "@/components/onboarding/InsuranceStep"
 import type { Clinic, BusinessHours, Service } from "@/types"
 
 export default function SettingsPage() {
+  return (
+    <Suspense fallback={<div className="space-y-4"><Skeleton className="h-8 w-48" /><Skeleton className="h-96" /></div>}>
+      <SettingsContent />
+    </Suspense>
+  )
+}
+
+function SettingsContent() {
   const { clinic, loading, refetch } = useClinic()
   const { toast } = useToast()
   const searchParams = useSearchParams()
