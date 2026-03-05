@@ -32,56 +32,103 @@ export default function HomePage() {
 
       {/* Hero */}
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-hero-gradient py-28 md:py-36">
-          {/* Floating blur orbs */}
-          <div className="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-blue-400/20 blur-3xl animate-float" />
-          <div className="pointer-events-none absolute -right-32 top-1/2 h-80 w-80 rounded-full bg-blue-300/20 blur-3xl animate-float" style={{ animationDelay: "2s" }} />
-          <div className="pointer-events-none absolute bottom-0 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl animate-float" style={{ animationDelay: "4s" }} />
+        <section className="relative overflow-hidden bg-gradient-to-br from-blue-50/80 via-white to-white py-16 md:py-20 lg:py-28">
+          {/* Subtle background decoration */}
+          <div className="pointer-events-none absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full bg-blue-100/40 blur-3xl" />
+          <div className="pointer-events-none absolute -right-20 bottom-0 h-[400px] w-[400px] rounded-full bg-blue-50/50 blur-3xl" />
 
-          <div className="container relative mx-auto px-4 text-center">
-            {/* Badge */}
-            <div className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white/70 px-4 py-1.5 text-sm font-medium text-blue-700 shadow-sm backdrop-blur-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-500"></span>
-              </span>
-              AI-Powered Dental Reception
+          <div className="container relative mx-auto px-4">
+            <div className="grid items-center gap-12 md:grid-cols-2 md:gap-16">
+              {/* Left Content */}
+              <div>
+                <h1 className="animate-fade-up text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+                  Welcome to DentAI{" "}
+                  <svg width="28" height="28" className="mb-1 inline-block text-blue-500 sm:w-8 sm:h-8" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9.937 15.5A2 2 0 008.5 14.063l-6.135-1.582a.5.5 0 010-.962L8.5 9.937A2 2 0 009.937 8.5l1.582-6.135a.5.5 0 01.962 0L14.063 8.5A2 2 0 0015.5 9.937l6.135 1.582a.5.5 0 010 .962L15.5 14.063a2 2 0 00-1.437 1.437l-1.582 6.135a.5.5 0 01-.962 0z" />
+                  </svg>
+                  <br />
+                  <span className="text-gradient">Dental Care</span>
+                </h1>
+                <p className="animate-fade-up-delay-1 mt-6 max-w-lg text-lg text-muted-foreground">
+                  Our AI-powered dental receptionist answers every call, books appointments 24/7,
+                  and recovers missed patients &mdash; personalized care tailored to your clinic&apos;s needs.
+                </p>
+                <div className="animate-fade-up-delay-2 mt-8 flex flex-wrap gap-4">
+                  <Link href="/register">
+                    <Button size="lg" className="text-base shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all">
+                      Start Free Trial
+                      <svg width="16" height="16" className="ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </Button>
+                  </Link>
+                  <Link href="/pricing">
+                    <Button variant="outline" size="lg" className="text-base border-primary text-primary hover:bg-primary/5 hover:-translate-y-0.5 transition-all">
+                      Schedule a Call
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right Images */}
+              <div className="animate-fade-up-delay-1 relative mx-auto w-full max-w-lg md:max-w-none">
+                {/* Main image - top right */}
+                <div className="relative ml-auto w-[85%] overflow-hidden rounded-2xl shadow-2xl">
+                  <div className="aspect-[4/3] bg-gradient-to-br from-blue-100 via-blue-50 to-white">
+                    {/* Replace with: <Image src="/hero-dental-1.jpg" alt="Dental care" fill className="object-cover" /> */}
+                    <div className="flex h-full flex-col items-center justify-center gap-3 p-8">
+                      <svg width="80" height="80" className="text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.8}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <span className="text-sm font-medium text-blue-300">Dental Professional</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Secondary image - bottom left, overlapping */}
+                <div className="absolute -bottom-6 left-0 z-10 w-[60%] overflow-hidden rounded-2xl border-4 border-white shadow-xl">
+                  <div className="aspect-[4/3] bg-gradient-to-br from-sky-100 via-blue-50 to-white">
+                    {/* Replace with: <Image src="/hero-dental-2.jpg" alt="Patient care" fill className="object-cover" /> */}
+                    <div className="flex h-full flex-col items-center justify-center gap-2 p-6">
+                      <svg width="56" height="56" className="text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.8}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
+                      </svg>
+                      <span className="text-xs font-medium text-blue-300">Patient Care</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Experience Badge */}
+                <div className="absolute -right-2 bottom-4 z-20 flex h-24 w-24 flex-col items-center justify-center rounded-full bg-white shadow-lg ring-4 ring-blue-500 sm:h-28 sm:w-28 md:-right-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C10.08 2 8.5 3.87 7.5 5c-.58.66-1.36 1-2.24 1C4.56 6 4 6.56 4 7.26c0 .53.15 1.03.43 1.47C3.56 9.64 3 10.96 3 12.4c0 1.2.36 2.34.97 3.29C4.34 16.82 5 18 6 19.5 7.58 21.93 9 22 12 22s4.42-.07 6-2.5c1-1.5 1.66-2.68 2.03-3.81.61-.95.97-2.09.97-3.29 0-1.44-.56-2.76-1.43-3.67.28-.44.43-.94.43-1.47C20 6.56 19.44 6 18.74 6c-.88 0-1.66-.34-2.24-1C15.5 3.87 13.92 2 12 2z" />
+                    </svg>
+                  </div>
+                  <span className="mt-1 text-sm font-bold text-blue-700">AI-Powered</span>
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">24/7 Service</span>
+                </div>
+              </div>
             </div>
 
-            <h1 className="animate-fade-up-delay-1 mx-auto max-w-4xl text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-              Your Dental Clinic&apos;s{" "}
-              <span className="text-gradient">AI Receptionist</span>
-            </h1>
-            <p className="animate-fade-up-delay-2 mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
-              Answer every call, book appointments 24/7, and recover missed patients automatically.
-              Never miss a patient again.
-            </p>
-            <div className="animate-fade-up-delay-3 mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link href="/register">
-                <Button size="lg" className="text-base shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5">
-                  Start Free 14-Day Trial
-                  <svg className="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </Button>
-              </Link>
-              <Link href="/pricing">
-                <Button variant="outline" size="lg" className="text-base hover:-translate-y-0.5">
-                  View Pricing
-                </Button>
-              </Link>
-            </div>
-
-            {/* Trust indicators */}
-            <div className="animate-fade-up-delay-4 mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-muted-foreground">
-              {["No credit card required", "14-day free trial", "Cancel anytime"].map((item) => (
-                <span key={item} className="flex items-center gap-1.5">
-                  <svg className="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                  {item}
-                </span>
-              ))}
+            {/* Trust Logos */}
+            <div className="animate-fade-up-delay-3 mt-20 border-t pt-10">
+              <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 opacity-50 grayscale">
+                {[
+                  { name: "SmileCare", icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" },
+                  { name: "BrightDental", icon: "M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" },
+                  { name: "PearlSmile", icon: "M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" },
+                  { name: "DentaPlus", icon: "M12 4.5v15m7.5-7.5h-15" },
+                  { name: "OralFirst", icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" },
+                ].map((brand) => (
+                  <div key={brand.name} className="flex items-center gap-2 text-lg font-bold text-muted-foreground transition-opacity hover:opacity-80">
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d={brand.icon} />
+                    </svg>
+                    {brand.name}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -144,19 +191,11 @@ export default function HomePage() {
         </section>
 
         {/* Social Proof */}
-        <section className="border-t border-b bg-muted/30 py-16">
+        <section className="border-t border-b bg-muted/30 py-12">
           <div className="container mx-auto px-4 text-center">
             <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
               Trusted by <span className="font-bold text-foreground">50+</span> dental clinics across the country
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-40 grayscale">
-              {["SmileCare", "BrightDental", "PearlSmile", "DentaPlus", "OralFirst"].map((name) => (
-                <div key={name} className="flex items-center gap-2 text-lg font-bold text-muted-foreground">
-                  <div className="h-8 w-8 rounded-lg bg-muted-foreground/20" />
-                  {name}
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -171,9 +210,9 @@ export default function HomePage() {
             </div>
             <div className="grid gap-8 md:grid-cols-3">
               {[
-                { name: "Starter", price: "₹4,999", features: ["Chat widget only", "500 conversations/mo", "Google Calendar integration", "Email support"] },
-                { name: "Growth", price: "₹9,999", features: ["Chat + voice AI", "1,000 conversations/mo", "SMS follow-ups", "Full dashboard", "Priority support"], popular: true },
-                { name: "Pro", price: "₹19,999", features: ["Everything unlimited", "Custom integrations", "Dedicated account manager", "White-label option"] },
+                { key: "starter", name: "Starter", price: "₹4,999", features: ["Chat widget only", "500 conversations/mo", "Google Calendar integration", "Email support"] },
+                { key: "growth", name: "Growth", price: "₹9,999", features: ["Chat + voice AI", "1,000 conversations/mo", "SMS follow-ups", "Full dashboard", "Priority support"], popular: true },
+                { key: "pro", name: "Pro", price: "₹19,999", features: ["Everything unlimited", "Custom integrations", "Dedicated account manager", "White-label option"] },
               ].map((plan) => (
                 <div
                   key={plan.name}
@@ -203,7 +242,7 @@ export default function HomePage() {
                       </li>
                     ))}
                   </ul>
-                  <Link href="/register" className="mt-8 block">
+                  <Link href={`/pricing?plan=${plan.key}`} className="mt-8 block">
                     <Button className="w-full" variant={plan.popular ? "default" : "outline"}>
                       Start Free Trial
                     </Button>

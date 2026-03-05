@@ -90,17 +90,30 @@ function SettingsContent() {
     if (!clinic) return
     setSaving(true)
 
-    const response = await fetch(`/api/clinics/${clinic.id}/settings`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
+    try {
+      // Convert empty strings to null for nullable fields
+      const cleanedData = Object.fromEntries(
+        Object.entries(data).map(([key, value]) => [
+          key,
+          value === "" ? null : value,
+        ])
+      )
 
-    if (response.ok) {
-      toast({ title: "Settings saved" })
-      refetch()
-    } else {
-      toast({ title: "Failed to save", variant: "destructive" })
+      const response = await fetch(`/api/clinics/${clinic.id}/settings`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cleanedData),
+      })
+
+      if (response.ok) {
+        toast({ title: "Settings saved" })
+        refetch()
+      } else {
+        const errorData = await response.json().catch(() => ({}))
+        toast({ title: errorData.error || "Failed to save settings", variant: "destructive" })
+      }
+    } catch {
+      toast({ title: "Network error. Please try again.", variant: "destructive" })
     }
     setSaving(false)
   }
@@ -278,22 +291,52 @@ function SettingsContent() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
                   </svg>
                   Voice AI (Vapi)
+                  {(process.env.NEXT_PUBLIC_VAPI_PHONE_NUMBER || clinic?.vapi_assistant_id) ? (
+                    <Badge variant="default" className="bg-green-500">Active</Badge>
+                  ) : (
+                    <Badge variant="secondary">Not configured</Badge>
+                  )}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-4">
                 <p className="text-sm text-muted-foreground">
                   Voice AI lets patients call your clinic and interact with an AI receptionist that can answer questions, check availability, and book appointments by phone.
                 </p>
+
                 {process.env.NEXT_PUBLIC_VAPI_PHONE_NUMBER ? (
-                  <div className="flex items-center gap-2">
-                    <Badge variant="default" className="bg-green-500">Active</Badge>
-                    <span className="text-sm font-medium">{process.env.NEXT_PUBLIC_VAPI_PHONE_NUMBER}</span>
+                  <div className="rounded-lg border bg-green-50 p-4">
+                    <div className="flex items-center gap-2">
+                      <svg className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span className="text-sm font-medium text-green-800">Voice AI is active</span>
+                    </div>
+                    <p className="mt-1 text-sm text-green-700">
+                      Patients can call: <strong>{process.env.NEXT_PUBLIC_VAPI_PHONE_NUMBER}</strong>
+                    </p>
                   </div>
                 ) : (
-                  <div className="rounded-lg border border-dashed p-4">
-                    <p className="text-sm font-medium">Setup required</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Add your Vapi phone number as <code className="rounded bg-muted px-1">VAPI_PHONE_NUMBER</code> and <code className="rounded bg-muted px-1">NEXT_PUBLIC_VAPI_PHONE_NUMBER</code> environment variables to enable voice AI.
+                  <div className="rounded-lg border border-dashed p-4 space-y-3">
+                    <p className="text-sm font-medium">How to set up Voice AI</p>
+                    <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
+                      <li>
+                        Create a <a href="https://vapi.ai" target="_blank" rel="noopener noreferrer" className="text-primary underline">Vapi.ai</a> account and get your API key
+                      </li>
+                      <li>
+                        Purchase a phone number in your Vapi dashboard
+                      </li>
+                      <li>
+                        Add these environment variables to your deployment:
+                        <div className="mt-1 space-y-1">
+                          <code className="block rounded bg-muted px-2 py-1 text-xs">VAPI_API_KEY=your_api_key</code>
+                          <code className="block rounded bg-muted px-2 py-1 text-xs">VAPI_PHONE_NUMBER=+1234567890</code>
+                          <code className="block rounded bg-muted px-2 py-1 text-xs">NEXT_PUBLIC_VAPI_PHONE_NUMBER=+1234567890</code>
+                        </div>
+                      </li>
+                      <li>Redeploy your application</li>
+                    </ol>
+                    <p className="text-xs text-muted-foreground">
+                      The AI voice assistant uses your clinic&apos;s services, hours, and AI settings configured in the other tabs.
                     </p>
                   </div>
                 )}
@@ -414,12 +457,23 @@ function SettingsContent() {
                   </div>
                 )}
 
-                <Button
-                  onClick={() => save(whatsappSettings as Partial<Clinic>)}
-                  disabled={saving}
-                >
-                  {saving ? "Saving..." : "Save WhatsApp Settings"}
-                </Button>
+                <Separator />
+                <div className="flex items-center gap-3">
+                  <Button
+                    onClick={() => save(whatsappSettings as Partial<Clinic>)}
+                    disabled={saving}
+                  >
+                    {saving ? "Saving..." : "Save WhatsApp Settings"}
+                  </Button>
+                  {clinic?.whatsapp_enabled && clinic?.whatsapp_phone_number && (
+                    <span className="flex items-center gap-1.5 text-xs text-green-600">
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      WhatsApp is active
+                    </span>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </div>

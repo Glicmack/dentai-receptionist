@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef, Suspense } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
@@ -55,14 +55,32 @@ const PLANS = [
   },
 ]
 
-export default function PricingPage() {
+function PricingContent() {
   const [annual, setAnnual] = useState(false)
   const [subscribing, setSubscribing] = useState<string | null>(null)
+  const [highlightedPlan, setHighlightedPlan] = useState<string | null>(null)
   const { clinic, loading } = useClinic()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const planRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
   const isLoggedIn = !!clinic
   const currentPlan = clinic?.plan || "trial"
+
+  // Handle ?plan= query param - highlight and scroll to selected plan
+  useEffect(() => {
+    const planParam = searchParams.get("plan")
+    if (planParam && PLANS.some((p) => p.key === planParam)) {
+      setHighlightedPlan(planParam)
+      // Scroll to plan card after a short delay for rendering
+      setTimeout(() => {
+        planRefs.current[planParam]?.scrollIntoView({ behavior: "smooth", block: "center" })
+      }, 300)
+      // Remove highlight after 3 seconds
+      const timer = setTimeout(() => setHighlightedPlan(null), 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [searchParams])
 
   async function handleSubscribe(planKey: string) {
     if (!isLoggedIn) {
@@ -188,14 +206,19 @@ export default function PricingPage() {
           {PLANS.map((plan) => {
             const isCurrentPlan = currentPlan === plan.key
 
+            const isHighlighted = highlightedPlan === plan.key
+
             return (
               <div
                 key={plan.name}
-                className={`group relative rounded-xl border bg-card p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
-                  plan.popular && !isCurrentPlan
+                ref={(el) => { planRefs.current[plan.key] = el }}
+                className={`group relative rounded-xl border bg-card p-8 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl ${
+                  plan.popular && !isCurrentPlan && !isHighlighted
                     ? "scale-[1.02] border-primary/30 shadow-lg shadow-primary/10 md:scale-105"
                     : "hover:border-primary/20"
-                } ${isCurrentPlan ? "ring-2 ring-green-500 shadow-lg" : ""}`}
+                } ${isCurrentPlan ? "ring-2 ring-green-500 shadow-lg" : ""} ${
+                  isHighlighted ? "ring-2 ring-blue-500 shadow-xl shadow-blue-500/20 scale-[1.03] -translate-y-1" : ""
+                }`}
               >
                 {plan.popular && !isCurrentPlan && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 px-4 py-1 text-xs font-medium text-white shadow-md">
@@ -248,5 +271,13 @@ export default function PricingPage() {
         </p>
       </main>
     </div>
+  )
+}
+
+export default function PricingPage() {
+  return (
+    <Suspense>
+      <PricingContent />
+    </Suspense>
   )
 }

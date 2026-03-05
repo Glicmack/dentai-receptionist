@@ -112,6 +112,19 @@ export default function DashboardPage() {
     )
   }
 
+  const planDetails: Record<string, { label: string; color: string; features: string }> = {
+    trial: { label: "Free Trial", color: "bg-amber-500", features: "All features for 14 days" },
+    starter: { label: "Starter", color: "bg-blue-500", features: "Chat widget, 500 convos/mo" },
+    growth: { label: "Growth", color: "bg-blue-600", features: "Chat + Voice, 1,000 convos/mo" },
+    pro: { label: "Pro", color: "bg-blue-800", features: "Everything unlimited" },
+  }
+
+  const currentPlan = clinic?.plan || "trial"
+  const plan = planDetails[currentPlan] || planDetails.trial
+  const isTrial = currentPlan === "trial"
+  const trialEndsAt = clinic?.trial_ends_at ? new Date(clinic.trial_ends_at) : null
+  const trialDaysLeft = trialEndsAt ? Math.max(0, Math.ceil((trialEndsAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24))) : 0
+
   return (
     <div className="space-y-6">
       <div>
@@ -120,6 +133,60 @@ export default function DashboardPage() {
           Welcome back{clinic?.name ? `, ${clinic.name}` : ""}
         </p>
       </div>
+
+      {/* Current Plan Status */}
+      <Card className="overflow-hidden border-primary/10">
+        <CardContent className="p-0">
+          <div className="flex flex-col sm:flex-row items-stretch">
+            {/* Plan info */}
+            <div className="flex flex-1 items-center gap-4 p-5">
+              <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${plan.color} text-white shadow-md`}>
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+                </svg>
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold">Current Plan</h3>
+                  <Badge className={`${plan.color} text-white`}>{plan.label}</Badge>
+                  {!isTrial && clinic?.subscription_status && (
+                    <Badge variant={clinic.subscription_status === "active" ? "default" : "destructive"} className={clinic.subscription_status === "active" ? "bg-green-500 hover:bg-green-600" : ""}>
+                      {clinic.subscription_status}
+                    </Badge>
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {isTrial ? (
+                    trialDaysLeft > 0 ? (
+                      <span>
+                        {trialDaysLeft} day{trialDaysLeft !== 1 ? "s" : ""} remaining
+                        {trialDaysLeft <= 3 && (
+                          <span className="ml-1 font-medium text-red-500"> &mdash; Upgrade soon!</span>
+                        )}
+                      </span>
+                    ) : (
+                      <span className="font-medium text-red-500">Trial expired</span>
+                    )
+                  ) : (
+                    plan.features
+                  )}
+                </p>
+              </div>
+            </div>
+            {/* Action */}
+            <div className="flex items-center border-t sm:border-t-0 sm:border-l p-4 sm:px-6 bg-muted/30">
+              <Link href="/pricing">
+                <Button variant={isTrial ? "default" : "outline"} size="sm">
+                  {isTrial ? "Upgrade Plan" : "Manage Plan"}
+                  <svg className="ml-1 h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <StatsCards {...stats} />
 

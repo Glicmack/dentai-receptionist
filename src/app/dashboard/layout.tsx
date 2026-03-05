@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Sidebar } from "@/components/dashboard/Sidebar"
 
 export default function DashboardLayout({
@@ -25,12 +26,12 @@ export default function DashboardLayout({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
               </svg>
             </button>
-            <div className="flex items-center gap-2 md:hidden">
+            <Link href="/dashboard" className="flex items-center gap-2 md:hidden">
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700">
                 <span className="text-xs font-bold text-white">D</span>
               </div>
               <span className="text-lg font-bold">DentAI</span>
-            </div>
+            </Link>
           </div>
 
           {/* AI Status indicator */}

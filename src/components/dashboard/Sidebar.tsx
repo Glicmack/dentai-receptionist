@@ -99,12 +99,12 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       >
         {/* Logo */}
         <div className="flex h-16 items-center justify-between border-b px-6">
-          <div className="flex items-center gap-2">
+          <Link href="/dashboard" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 shadow-md">
               <span className="text-sm font-bold text-white">D</span>
             </div>
             <span className="text-xl font-bold">DentAI</span>
-          </div>
+          </Link>
           {/* Close button on mobile */}
           <button
             onClick={onClose}
