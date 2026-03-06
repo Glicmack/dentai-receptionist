@@ -216,3 +216,28 @@ export interface WhatsAppSession {
   last_message_at: string
   qualification_data: Record<string, unknown>
 }
+
+// X-Ray Analysis Types
+export interface XrayAnalysis {
+  id: string
+  created_at: string
+  clinic_id: string
+  image_url: string
+  xray_type: 'periapical' | 'panoramic' | 'bitewing' | 'cbct'
+  findings: string[]
+  severity: 'normal' | 'monitor' | 'urgent'
+  treatments: string[]
+  confidence: number
+}
+
+// Smile Simulation Types
+export interface SmileSimulation {
+  id: string
+  created_at: string
+  clinic_id: string
+  before_image_url: string
+  after_image_url: string
+  treatment_type: string
+  notes: string | null
+  patient_ref: string | null
+}
