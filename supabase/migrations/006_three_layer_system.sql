@@ -238,3 +238,11 @@ CREATE POLICY "Admins can view all users"
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('website-assets', 'website-assets', true)
 ON CONFLICT (id) DO NOTHING;
+
+-- ============================================
+-- SEED: Platform Admins
+-- ============================================
+INSERT INTO platform_admins (email, full_name) VALUES
+  ('glicmack@gmail.com', 'Prince Vekariya'),
+  ('priyankmaniya233@gmail.com', 'Priyank Maniya')
+ON CONFLICT (email) DO NOTHING;
