@@ -1,10 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 
 interface AdminEntry {
@@ -16,7 +15,7 @@ interface AdminEntry {
 
 export default function AdminSettingsPage() {
   const [admins, setAdmins] = useState<AdminEntry[]>([])
-  const [loading, setLoading] = useState(true)
+  const [, setLoading] = useState(true)
   const [newEmail, setNewEmail] = useState("")
   const [newName, setNewName] = useState("")
   const [adding, setAdding] = useState(false)

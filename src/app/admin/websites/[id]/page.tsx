@@ -33,7 +33,7 @@ export default function AdminWebsiteEditPage() {
     if (!website) return
     setSaving(true)
     try {
-      const { id, clinic_id, created_at, updated_at, ...updateData } = website as DoctorWebsite & { clinics?: unknown }
+      const { id: _id, clinic_id: _cid, created_at: _ca, updated_at: _ua, ...updateData } = website as DoctorWebsite & { clinics?: unknown }
       // Remove the joined clinics data
       const cleanData = { ...updateData }
       delete (cleanData as Record<string, unknown>)["clinics"]

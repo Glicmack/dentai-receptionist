@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { createAdminClient } from "@/lib/supabase/admin"
 
 interface DoctorCard {
   id: string
