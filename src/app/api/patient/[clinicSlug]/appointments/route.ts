@@ -8,19 +8,30 @@ export async function GET(
 ) {
   try {
     const session = await getPatientSession()
-    if (!session || session.clinicSlug !== params.clinicSlug) {
+    if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const adminClient = createAdminClient()
+
+    // Get clinic by slug
+    const { data: clinic } = await adminClient
+      .from("clinics")
+      .select("id")
+      .eq("slug", params.clinicSlug)
+      .single()
+
+    if (!clinic) {
+      return NextResponse.json({ error: "Clinic not found" }, { status: 404 })
+    }
 
     const { data, error } = await adminClient
       .from("appointments")
       .select(
         "id, patient_name, service_type, duration_minutes, appointment_datetime, status, booked_via, notes, created_at"
       )
-      .eq("clinic_id", session.clinicId)
-      .eq("patient_phone", session.phone)
+      .eq("clinic_id", clinic.id)
+      .eq("patient_email", session.email)
       .order("appointment_datetime", { ascending: false })
 
     if (error) {
