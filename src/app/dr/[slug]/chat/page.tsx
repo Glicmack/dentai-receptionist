@@ -15,7 +15,6 @@ interface Message {
 
 export default function DrChatPage() {
   const params = useParams()
-  const router = useRouter()
   const { toast } = useToast()
   const slug = params.slug as string
 

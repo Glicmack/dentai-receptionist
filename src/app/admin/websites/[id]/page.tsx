@@ -33,10 +33,8 @@ export default function AdminWebsiteEditPage() {
     if (!website) return
     setSaving(true)
     try {
-      const { id: _id, clinic_id: _cid, created_at: _ca, updated_at: _ua, ...updateData } = website as DoctorWebsite & { clinics?: unknown }
-      // Remove the joined clinics data
-      const cleanData = { ...updateData }
-      delete (cleanData as Record<string, unknown>)["clinics"]
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, clinic_id, created_at, updated_at, clinics, ...cleanData } = website as DoctorWebsite & { clinics?: unknown }
 
       const res = await fetch(`/api/admin/websites/${params.id}`, {
         method: "PUT",
