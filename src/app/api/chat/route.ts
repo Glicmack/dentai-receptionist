@@ -40,6 +40,43 @@ export async function POST(request: Request) {
       )
     }
 
+    // Check if conversation is paused (doctor took over)
+    if (sessionId) {
+      const { data: existingConv } = await supabase
+        .from("conversations")
+        .select("ai_paused")
+        .eq("id", sessionId)
+        .single()
+
+      if (existingConv?.ai_paused) {
+        // AI is paused - just save the patient message, don't generate AI response
+        const pausedTranscript: TranscriptMessage[] = [
+          ...(conversationHistory || []),
+          { role: "user", content: message, timestamp: new Date().toISOString() },
+        ]
+        await supabase
+          .from("conversations")
+          .update({ transcript: pausedTranscript })
+          .eq("id", sessionId)
+
+        // Save to conversation_messages table
+        await supabase.from("conversation_messages").insert({
+          conversation_id: sessionId,
+          clinic_id: clinic.id,
+          sender_type: "patient",
+          content: message,
+        })
+
+        return NextResponse.json({
+          message: null,
+          intent: "general",
+          appointmentBooked: false,
+          appointment: null,
+          aiPaused: true,
+        })
+      }
+    }
+
     // Build system prompt
     const systemPrompt = buildSystemPrompt(clinic)
 

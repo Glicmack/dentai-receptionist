@@ -47,6 +47,12 @@ export interface Clinic {
   stripe_subscription_id: string | null
   subscription_status: string
   trial_ends_at: string
+
+  // Directory listing (3-layer system)
+  is_listed: boolean
+  specialty: string | null
+  rating: number
+  description: string | null
 }
 
 export interface BusinessHours {
@@ -93,6 +99,12 @@ export interface Conversation {
   appointment_id: string | null
   vapi_call_id: string | null
   summary: string | null
+  // Live chat fields
+  patient_id: string | null
+  ai_paused: boolean
+  ai_paused_at: string | null
+  ai_paused_by: string | null
+  is_active: boolean
 }
 
 export interface TranscriptMessage {
@@ -240,4 +252,86 @@ export interface SmileSimulation {
   treatment_type: string
   notes: string | null
   patient_ref: string | null
+}
+
+// ============================================
+// 3-Layer System Types
+// ============================================
+
+export interface Patient {
+  id: string
+  email: string
+  phone: string | null
+  phone_verified: boolean
+  full_name: string
+  avatar_url: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface PatientClinicLink {
+  id: string
+  patient_id: string
+  clinic_id: string
+  first_contact_at: string
+  last_contact_at: string
+  is_blocked: boolean
+}
+
+export interface ConversationMessage {
+  id: string
+  conversation_id: string
+  clinic_id: string
+  sender_type: 'patient' | 'ai' | 'doctor'
+  sender_id: string | null
+  content: string
+  created_at: string
+}
+
+export interface DoctorWebsite {
+  id: string
+  clinic_id: string
+  slug: string
+  template: string
+  custom_domain: string | null
+  is_published: boolean
+  hero_title: string | null
+  hero_subtitle: string | null
+  hero_image_url: string | null
+  about_text: string | null
+  services_override: Service[] | null
+  gallery_images: string[]
+  theme_colors: { primary: string; secondary: string }
+  custom_css: string | null
+  github_repo: string | null
+  seo_title: string | null
+  seo_description: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface PlatformAdmin {
+  id: string
+  email: string
+  full_name: string | null
+  created_at: string
+}
+
+// Patient auth types
+export interface PatientSession {
+  patientId: string
+  email: string
+  fullName: string
+}
+
+export interface PatientLoginRequest {
+  email: string
+  password: string
+}
+
+export interface PatientRegisterRequest {
+  email: string
+  password: string
+  fullName: string
+  phone?: string
 }
