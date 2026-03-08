@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import Anthropic from "@anthropic-ai/sdk"
 import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 
 const SYSTEM_PROMPT = `You are an expert dental radiologist AI assistant. Analyse the provided dental X-ray image and return a structured JSON response with exactly these fields:
 {
@@ -51,11 +52,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid X-ray type" }, { status: 400 })
     }
 
-    // Upload image to Supabase Storage
+    // Upload image to Supabase Storage (use admin client to bypass storage RLS)
+    const adminClient = createAdminClient()
     const imageBuffer = Buffer.from(image, "base64")
     const fileName = `${userData.clinic_id}/${Date.now()}.jpg`
 
-    const { error: uploadError } = await supabase.storage
+    // Ensure bucket exists
+    const { data: buckets } = await adminClient.storage.listBuckets()
+    if (!buckets?.find(b => b.name === "xray-images")) {
+      await adminClient.storage.createBucket("xray-images", { public: false })
+    }
+
+    const { error: uploadError } = await adminClient.storage
       .from("xray-images")
       .upload(fileName, imageBuffer, {
         contentType: "image/jpeg",
@@ -70,7 +78,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const { data: urlData } = supabase.storage
+    const { data: urlData } = adminClient.storage
       .from("xray-images")
       .getPublicUrl(fileName)
 
