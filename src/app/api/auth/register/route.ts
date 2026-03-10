@@ -3,6 +3,9 @@ import { createAdminClient } from "@/lib/supabase/admin"
 import { generateSlug } from "@/lib/utils"
 
 export async function POST(request: Request) {
+  // Public registration disabled — accounts are created by clinic owners/admins
+  return NextResponse.json({ error: "Public registration is disabled" }, { status: 403 })
+
   try {
     const { clinicName, fullName, email, password } = await request.json()
 

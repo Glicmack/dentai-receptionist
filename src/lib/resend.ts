@@ -74,3 +74,36 @@ export async function sendDailySummary(
     return false
   }
 }
+
+export async function sendTeamInvite(
+  recipientEmail: string,
+  recipientName: string,
+  clinicName: string,
+  role: string,
+  tempPassword: string
+) {
+  try {
+    await getResend().emails.send({
+      from: "DentAI <noreply@dentai.com>",
+      to: recipientEmail,
+      subject: `You've been invited to ${clinicName} on DentAI`,
+      html: `
+        <h2>Welcome to ${clinicName}!</h2>
+        <p>Hi ${recipientName},</p>
+        <p>You've been added as <strong>${role}</strong> to ${clinicName} on DentAI.</p>
+        <p>Here are your login credentials:</p>
+        <ul>
+          <li><strong>Email:</strong> ${recipientEmail}</li>
+          <li><strong>Temporary Password:</strong> ${tempPassword}</li>
+        </ul>
+        <p>Please <a href="${process.env.NEXT_PUBLIC_APP_URL}/login">sign in</a> and change your password.</p>
+        <br>
+        <p>- The DentAI Team</p>
+      `,
+    })
+    return true
+  } catch (error) {
+    console.error("Resend team invite error:", error)
+    return false
+  }
+}

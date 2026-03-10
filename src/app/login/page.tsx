@@ -2,7 +2,6 @@
 
 import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -186,10 +185,7 @@ function LoginContent() {
               </Button>
 
               <p className="text-center text-sm text-muted-foreground">
-                Don&apos;t have an account?{" "}
-                <Link href="/register" className="font-medium text-primary hover:underline">
-                  Start free trial
-                </Link>
+                Contact your clinic admin for an account.
               </p>
             </CardFooter>
           </form>

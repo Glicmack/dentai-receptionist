@@ -15,7 +15,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useToast } from "@/hooks/use-toast"
+import { useUser } from "@/hooks/useUser"
 import { BusinessHoursStep } from "@/components/onboarding/BusinessHoursStep"
 import { ServicesStep } from "@/components/onboarding/ServicesStep"
 import { InsuranceStep } from "@/components/onboarding/InsuranceStep"
@@ -31,9 +34,20 @@ export default function SettingsPage() {
 
 function SettingsContent() {
   const { clinic, loading, refetch } = useClinic()
+  const { user: currentUser } = useUser()
   const { toast } = useToast()
   const searchParams = useSearchParams()
   const [saving, setSaving] = useState(false)
+
+  // Team management state
+  const isAdmin = currentUser && ["owner", "admin"].includes(currentUser.role)
+  const [members, setMembers] = useState<Array<{
+    id: string; email: string; full_name: string | null; role: string; created_at: string
+  }>>([])
+  const [membersLoading, setMembersLoading] = useState(false)
+  const [addDialogOpen, setAddDialogOpen] = useState(false)
+  const [inviting, setInviting] = useState(false)
+  const [newMember, setNewMember] = useState({ email: "", fullName: "", role: "staff" })
 
   // Show success toast when returning from Stripe Checkout
   useEffect(() => {
@@ -118,6 +132,59 @@ function SettingsContent() {
     setSaving(false)
   }
 
+  // Team functions
+  async function fetchMembers() {
+    setMembersLoading(true)
+    try {
+      const res = await fetch("/api/team")
+      if (res.ok) setMembers(await res.json())
+    } catch { /* silent */ }
+    setMembersLoading(false)
+  }
+
+  async function inviteMember(e: React.FormEvent) {
+    e.preventDefault()
+    setInviting(true)
+    try {
+      const res = await fetch("/api/team/invite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newMember),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        toast({ title: `Invited ${newMember.fullName}` })
+        setAddDialogOpen(false)
+        setNewMember({ email: "", fullName: "", role: "staff" })
+        fetchMembers()
+      } else {
+        toast({ title: data.error || "Failed to invite", variant: "destructive" })
+      }
+    } catch {
+      toast({ title: "Network error", variant: "destructive" })
+    }
+    setInviting(false)
+  }
+
+  async function removeMember(id: string, name: string) {
+    if (!confirm(`Remove ${name} from the team?`)) return
+    try {
+      const res = await fetch(`/api/team/${id}`, { method: "DELETE" })
+      if (res.ok) {
+        toast({ title: `${name} removed` })
+        fetchMembers()
+      } else {
+        const data = await res.json()
+        toast({ title: data.error || "Failed to remove", variant: "destructive" })
+      }
+    } catch {
+      toast({ title: "Network error", variant: "destructive" })
+    }
+  }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { if (isAdmin) fetchMembers() }, [isAdmin])
+
   if (loading) {
     return (
       <div className="space-y-4">
@@ -146,6 +213,7 @@ function SettingsContent() {
           <TabsTrigger value="integrations">Integrations</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
           <TabsTrigger value="billing">Billing</TabsTrigger>
+          {isAdmin && <TabsTrigger value="team">Team</TabsTrigger>}
         </TabsList>
 
         {/* Clinic Profile */}
@@ -617,6 +685,114 @@ function SettingsContent() {
             </Card>
           </div>
         </TabsContent>
+
+        {/* Team */}
+        {isAdmin && (
+          <TabsContent value="team">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Team Members</CardTitle>
+                  <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button>Add Member</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Add Team Member</DialogTitle>
+                      </DialogHeader>
+                      <form onSubmit={inviteMember} className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Full Name</Label>
+                          <Input
+                            value={newMember.fullName}
+                            onChange={(e) => setNewMember({ ...newMember, fullName: e.target.value })}
+                            placeholder="Dr. Jane Smith"
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Email</Label>
+                          <Input
+                            type="email"
+                            value={newMember.email}
+                            onChange={(e) => setNewMember({ ...newMember, email: e.target.value })}
+                            placeholder="jane@clinic.com"
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Role</Label>
+                          <Select
+                            value={newMember.role}
+                            onValueChange={(v) => setNewMember({ ...newMember, role: v })}
+                          >
+                            <SelectTrigger><SelectValue /></SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="staff">Staff</SelectItem>
+                              <SelectItem value="admin">Admin</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <Button type="submit" className="w-full" disabled={inviting}>
+                          {inviting ? "Sending invite..." : "Send Invite"}
+                        </Button>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {membersLoading ? (
+                  <div className="space-y-2">
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-10 w-full" />
+                  </div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Role</TableHead>
+                        <TableHead>Added</TableHead>
+                        <TableHead />
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {members.map((member) => (
+                        <TableRow key={member.id}>
+                          <TableCell>{member.full_name || "—"}</TableCell>
+                          <TableCell>{member.email}</TableCell>
+                          <TableCell>
+                            <Badge variant={member.role === "owner" ? "default" : "secondary"}>
+                              {member.role}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            {new Date(member.created_at).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>
+                            {member.id !== currentUser?.id && member.role !== "owner" && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-destructive"
+                                onClick={() => removeMember(member.id, member.full_name || member.email)}
+                              >
+                                Remove
+                              </Button>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        )}
       </Tabs>
     </div>
   )
