@@ -22,14 +22,15 @@ export async function POST(request: Request) {
     })
 
     const email = payload.email as string
-    const name = payload.name as string || "Patient"
+    const fullName = payload.name as string || "Patient"
 
     if (!email) {
       return NextResponse.json({ error: "Email not found in Google account" }, { status: 400 })
     }
 
-    // Look up clinic
     const adminClient = createAdminClient()
+
+    // Look up clinic
     const { data: clinic } = await adminClient
       .from("clinics")
       .select("id")
@@ -40,17 +41,45 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Clinic not found" }, { status: 404 })
     }
 
-    // Create patient session with email
+    // Find or create patient record
+    let patientId = ""
+    const { data: existingPatient } = await adminClient
+      .from("patients")
+      .select("id, full_name")
+      .eq("email", email.toLowerCase())
+      .single()
+
+    if (existingPatient) {
+      patientId = existingPatient.id
+    } else {
+      // Auto-register Google user as a patient (no password needed)
+      const { data: newPatient, error: insertError } = await adminClient
+        .from("patients")
+        .insert({
+          email: email.toLowerCase(),
+          full_name: fullName,
+          password_hash: "", // Google OAuth — no password
+          google_auth: true,
+        })
+        .select("id")
+        .single()
+
+      if (insertError) {
+        console.error("Failed to create patient:", insertError)
+        return NextResponse.json({ error: "Failed to create account" }, { status: 500 })
+      }
+      patientId = newPatient.id
+    }
+
+    // Create patient session
     const token = await createPatientToken({
-      phone: "",
-      email,
-      name,
-      clinicId: clinic.id,
-      clinicSlug,
+      patientId,
+      email: email.toLowerCase(),
+      fullName,
     })
     setPatientCookie(token)
 
-    return NextResponse.json({ success: true, patientName: name })
+    return NextResponse.json({ success: true, patientName: fullName })
   } catch (error) {
     console.error("Google auth error:", error)
     return NextResponse.json({ error: "Authentication failed" }, { status: 500 })

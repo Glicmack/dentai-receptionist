@@ -72,7 +72,47 @@ export async function POST(request: Request) {
       }
     }
 
-    // 7. Check for special commands
+    // 7. Check if AI is paused (doctor has taken over)
+    if (session.conversation_id) {
+      const { data: convoStatus } = await supabase
+        .from("conversations")
+        .select("ai_paused")
+        .eq("id", session.conversation_id)
+        .single()
+
+      if (convoStatus?.ai_paused) {
+        // Save patient message but don't generate AI response
+        const updatedTranscript: TranscriptMessage[] = [
+          ...conversationHistory,
+          { role: "user", content: incomingMessage, timestamp: new Date().toISOString() },
+        ]
+        await supabase
+          .from("conversations")
+          .update({
+            transcript: updatedTranscript,
+            patient_name: senderName || session.patient_name,
+          })
+          .eq("id", session.conversation_id)
+
+        // Also save to conversation_messages for live chat
+        await supabase.from("conversation_messages").insert({
+          conversation_id: session.conversation_id,
+          clinic_id: clinic.id,
+          sender_type: "patient",
+          content: incomingMessage,
+        })
+
+        // Update session timestamp
+        await supabase
+          .from("whatsapp_sessions")
+          .update({ last_message_at: new Date().toISOString() })
+          .eq("id", session.id)
+
+        return twimlResponse("")
+      }
+    }
+
+    // 8. Check for special commands
     const specialResponse = await handleSpecialCommands(
       supabase,
       incomingMessage,
@@ -95,7 +135,7 @@ export async function POST(request: Request) {
       return twimlResponse("")
     }
 
-    // 8. Process through Claude AI (same pipeline as web chat)
+    // 9. Process through Claude AI (same pipeline as web chat)
     const systemPrompt = buildSystemPrompt(clinic)
     const result = await processChat(
       systemPrompt,
@@ -103,7 +143,7 @@ export async function POST(request: Request) {
       incomingMessage
     )
 
-    // 9. Save conversation
+    // 10. Save conversation
     const updatedSession = await appendToTranscript(
       supabase,
       session,
@@ -116,7 +156,7 @@ export async function POST(request: Request) {
       result.intent
     )
 
-    // 10. Handle intent-based side effects
+    // 11. Handle intent-based side effects
     if (result.intent === "lead_capture") {
       await supabase.from("leads").insert({
         clinic_id: clinic.id,
@@ -130,10 +170,10 @@ export async function POST(request: Request) {
       })
     }
 
-    // 11. Send AI response via WhatsApp
+    // 12. Send AI response via WhatsApp
     await sendWhatsApp(senderPhone, result.message)
 
-    // 12. Return empty TwiML (reply already sent via REST)
+    // 13. Return empty TwiML (reply already sent via REST)
     return twimlResponse("")
   } catch (error) {
     console.error("WhatsApp webhook error:", error)

@@ -103,9 +103,9 @@ export async function POST(request: Request) {
 
     // Create JWT and set cookie
     const token = await createPatientToken({
-      phone: normalizedPhone,
-      clinicId: clinic.id,
-      clinicSlug,
+      patientId: "", // OTP-based auth doesn't have a patient account yet
+      email: "", // OTP-based auth uses phone
+      fullName: patientName,
     })
     setPatientCookie(token)
 
