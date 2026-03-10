@@ -68,7 +68,7 @@ export default function HomePage() {
                   Experience gentle, expert dental care in a warm and modern environment.
                 </p>
                 <div className="animate-fade-up-delay-2 mt-8 flex flex-wrap gap-4">
-                  <Link href="/register">
+                  <Link href="/login">
                     <Button size="lg" className="bg-[#1B56DB] text-base shadow-lg shadow-blue-500/25 hover:bg-[#1647b8] hover:-translate-y-0.5 transition-all">
                       Book Appointment
                     </Button>
@@ -388,7 +388,7 @@ export default function HomePage() {
                   while you focus on what you do best — creating beautiful smiles.
                 </p>
                 <div className="mt-8 flex flex-wrap justify-center gap-4 md:justify-start">
-                  <Link href="/register">
+                  <Link href="/login">
                     <Button size="lg" className="bg-white text-[#1B56DB] text-base shadow-lg hover:bg-blue-50 hover:-translate-y-0.5 transition-all">
                       Book Appointment
                     </Button>
