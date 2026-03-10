@@ -14,14 +14,23 @@ export async function GET(
 
     const adminClient = createAdminClient()
 
-    const { data, error } = await adminClient
+    // Build query based on auth method (phone or email)
+    let query = adminClient
       .from("appointments")
       .select(
         "id, patient_name, service_type, duration_minutes, appointment_datetime, status, booked_via, notes, created_at"
       )
       .eq("clinic_id", session.clinicId)
-      .eq("patient_phone", session.phone)
-      .order("appointment_datetime", { ascending: false })
+
+    if (session.phone) {
+      query = query.eq("patient_phone", session.phone)
+    } else if (session.email) {
+      query = query.eq("patient_email", session.email)
+    } else {
+      return NextResponse.json({ error: "Invalid session" }, { status: 401 })
+    }
+
+    const { data, error } = await query.order("appointment_datetime", { ascending: false })
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })

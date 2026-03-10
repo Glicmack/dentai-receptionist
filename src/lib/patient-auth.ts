@@ -9,6 +9,8 @@ const SESSION_EXPIRY_DAYS = 7
 
 export interface PatientSession {
   phone: string
+  email?: string
+  name?: string
   clinicId: string
   clinicSlug: string
 }
@@ -30,6 +32,8 @@ export async function verifyPatientToken(token: string): Promise<PatientSession 
     const { payload } = await jwtVerify(token, JWT_SECRET)
     return {
       phone: payload.phone as string,
+      email: (payload.email as string) || undefined,
+      name: (payload.name as string) || undefined,
       clinicId: payload.clinicId as string,
       clinicSlug: payload.clinicSlug as string,
     }

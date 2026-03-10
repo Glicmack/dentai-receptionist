@@ -1,7 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation"
+import Script from "next/script"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { PhoneInput } from "@/components/ui/phone-input"
@@ -9,6 +10,19 @@ import { OTPInput } from "@/components/patient/OTPInput"
 import { useToast } from "@/hooks/use-toast"
 
 type Step = "phone" | "otp" | "verifying"
+
+declare global {
+  interface Window {
+    google?: {
+      accounts: {
+        id: {
+          initialize: (config: Record<string, unknown>) => void
+          renderButton: (el: HTMLElement, config: Record<string, unknown>) => void
+        }
+      }
+    }
+  }
+}
 
 export default function PatientPortalLoginPage() {
   const params = useParams()
@@ -22,6 +36,8 @@ export default function PatientPortalLoginPage() {
   const [loading, setLoading] = useState(false)
   const [clinicName, setClinicName] = useState("")
   const [cooldown, setCooldown] = useState(0)
+  const [googleLoading, setGoogleLoading] = useState(false)
+  const googleBtnRef = useRef<HTMLDivElement>(null)
 
   // Load clinic name
   useEffect(() => {
@@ -39,6 +55,56 @@ export default function PatientPortalLoginPage() {
     const timer = setTimeout(() => setCooldown(cooldown - 1), 1000)
     return () => clearTimeout(timer)
   }, [cooldown])
+
+  const handleGoogleResponse = useCallback(async (response: { credential: string }) => {
+    setGoogleLoading(true)
+    try {
+      const res = await fetch("/api/patient/google-auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ credential: response.credential, clinicSlug }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        toast({ title: data.error || "Google sign-in failed", variant: "destructive" })
+      } else {
+        toast({ title: `Welcome, ${data.patientName}!` })
+        router.push(`/p/${clinicSlug}/book`)
+        router.refresh()
+      }
+    } catch {
+      toast({ title: "Google sign-in failed", variant: "destructive" })
+    }
+    setGoogleLoading(false)
+  }, [clinicSlug, router, toast])
+
+  function initializeGoogle() {
+    if (!window.google || !googleBtnRef.current) return
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+    if (!clientId) return
+
+    window.google.accounts.id.initialize({
+      client_id: clientId,
+      callback: handleGoogleResponse,
+    })
+    window.google.accounts.id.renderButton(googleBtnRef.current, {
+      theme: "outline",
+      size: "large",
+      width: "100%",
+      text: "continue_with",
+      shape: "rectangular",
+    })
+  }
+
+  // Re-initialize when ref is available
+  useEffect(() => {
+    if (step === "phone") {
+      // Small delay to ensure DOM is ready
+      const timer = setTimeout(initializeGoogle, 100)
+      return () => clearTimeout(timer)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, handleGoogleResponse])
 
   async function handleSendOTP() {
     if (!phone) {
@@ -104,6 +170,11 @@ export default function PatientPortalLoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-12">
+      <Script
+        src="https://accounts.google.com/gsi/client"
+        strategy="afterInteractive"
+        onLoad={initializeGoogle}
+      />
       <Card className="w-full max-w-md animate-scale-in">
         <CardHeader className="text-center">
           <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 shadow-lg shadow-blue-500/20">
@@ -116,7 +187,7 @@ export default function PatientPortalLoginPage() {
           </CardTitle>
           <CardDescription>
             {step === "phone"
-              ? "Enter your phone number to view your appointments"
+              ? "Sign in to book appointments"
               : "Enter the verification code sent to your phone"}
           </CardDescription>
         </CardHeader>
@@ -124,6 +195,25 @@ export default function PatientPortalLoginPage() {
         <CardContent className="space-y-4">
           {step === "phone" && (
             <>
+              {/* Google Sign-In */}
+              <div className="flex flex-col items-center">
+                <div ref={googleBtnRef} className="w-full [&>div]:!w-full" />
+                {googleLoading && (
+                  <p className="mt-2 text-sm text-muted-foreground">Signing in with Google...</p>
+                )}
+              </div>
+
+              {/* Divider */}
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-card px-2 text-muted-foreground">or use phone</span>
+                </div>
+              </div>
+
+              {/* Phone OTP */}
               <div className="space-y-2">
                 <PhoneInput
                   value={phone}
