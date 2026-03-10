@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -125,7 +126,7 @@ export default function LoginPage() {
               </Button>
 
               <p className="text-center text-sm text-muted-foreground">
-                Want to set up your clinic? <a href="mailto:support@dentai.com" className="font-medium text-primary hover:underline">Contact us</a> to schedule a meeting.
+                Don&apos;t have an account? <Link href="/contact" className="font-medium text-primary hover:underline">Contact us</Link> to get started.
               </p>
             </CardFooter>
           </form>
