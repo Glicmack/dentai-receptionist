@@ -16,7 +16,6 @@ import type { Service } from "@/types"
 const SUGGESTED_SERVICES: Service[] = [
   { name: "Cleaning", duration: 60, price: "from ₹1,500" },
   { name: "Checkup", duration: 30, price: "from ₹800" },
-  { name: "X-Ray", duration: 30, price: "from ₹500" },
   { name: "Whitening", duration: 90, price: "from ₹5,000" },
   { name: "Filling", duration: 45, price: "from ₹2,000" },
   { name: "Crown", duration: 90, price: "from ₹8,000" },
