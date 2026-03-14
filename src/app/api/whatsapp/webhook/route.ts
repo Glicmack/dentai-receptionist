@@ -1,27 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { runDentalAgent } from '@/lib/whatsapp/claude-dental-agent';
-import {
-  getOrCreateConversation,
-  updateConversationHistory,
-  logMessage,
-  saveAppointment,
-  saveIntakeData,
-} from '@/lib/whatsapp/conversation-store';
-import { sendWhatsAppMessage } from '@/lib/whatsapp/twilio';
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
+  console.log('[WhatsApp Webhook] POST received');
+
   try {
     const formData = await req.formData();
     const body = Object.fromEntries(formData.entries()) as Record<string, string>;
 
-    const patientPhone = body.From;   // e.g. whatsapp:+447911123456
+    const patientPhone = body.From;
     const messageBody = body.Body?.trim();
+
+    console.log(`[WhatsApp] From: ${patientPhone}, Body: ${messageBody}`);
 
     if (!patientPhone || !messageBody) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    console.log(`[WhatsApp] Inbound from ${patientPhone}: ${messageBody}`);
+    // Lazy import to avoid module-level crashes
+    const { getOrCreateConversation, updateConversationHistory, logMessage, saveAppointment, saveIntakeData } = await import('@/lib/whatsapp/conversation-store');
+    const { runDentalAgent } = await import('@/lib/whatsapp/claude-dental-agent');
+    const { sendWhatsAppMessage } = await import('@/lib/whatsapp/twilio');
 
     // Get or create conversation session
     const conversation = await getOrCreateConversation(patientPhone);
@@ -88,7 +89,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Twilio sends POST only; block other methods
 export async function GET() {
   return NextResponse.json({ status: 'WhatsApp webhook active' });
 }
