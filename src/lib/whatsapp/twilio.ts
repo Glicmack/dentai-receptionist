@@ -1,15 +1,22 @@
 import twilio from 'twilio';
 
-const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID!,
-  process.env.TWILIO_AUTH_TOKEN!
-);
+function getClient() {
+  return twilio(
+    process.env.TWILIO_ACCOUNT_SID!,
+    process.env.TWILIO_AUTH_TOKEN!
+  );
+}
+
+function formatWhatsAppNumber(phone: string): string {
+  return phone.startsWith('whatsapp:') ? phone : `whatsapp:${phone}`;
+}
 
 export async function sendWhatsAppMessage(to: string, body: string) {
   try {
+    const client = getClient();
     const message = await client.messages.create({
-      from: process.env.TWILIO_WHATSAPP_NUMBER!,
-      to,
+      from: formatWhatsAppNumber(process.env.TWILIO_WHATSAPP_NUMBER!),
+      to: formatWhatsAppNumber(to),
       body,
     });
     return { success: true as const, sid: message.sid };
