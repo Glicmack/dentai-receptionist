@@ -7,8 +7,23 @@ export async function POST(req: NextRequest) {
   console.log('[WhatsApp Webhook] POST received');
 
   try {
-    const formData = await req.formData();
-    const body = Object.fromEntries(formData.entries()) as Record<string, string>;
+    // Parse body - handle both form-data and url-encoded (Twilio sends url-encoded)
+    let body: Record<string, string>;
+    const contentType = req.headers.get('content-type') || '';
+
+    if (contentType.includes('application/x-www-form-urlencoded')) {
+      const text = await req.text();
+      const params = new URLSearchParams(text);
+      body = Object.fromEntries(params.entries());
+    } else if (contentType.includes('multipart/form-data')) {
+      const formData = await req.formData();
+      body = Object.fromEntries(formData.entries()) as Record<string, string>;
+    } else {
+      // Fallback: try url-encoded parsing
+      const text = await req.text();
+      const params = new URLSearchParams(text);
+      body = Object.fromEntries(params.entries());
+    }
 
     const patientPhone = body.From;
     const messageBody = body.Body?.trim();
